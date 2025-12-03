@@ -8,8 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PawPrint, Loader2 } from "lucide-react";
 import { Login } from "../Features/Authentication/mutationFunction";
 import queryClient from "../Store/queryClient";
-import {jwtDecode} from 'jwt-decode'
-import { GoogleLogin } from "@react-oauth/google";
+
 import axios from "axios";
 
 // It only works for the variables defined with VITE as their starting point.
