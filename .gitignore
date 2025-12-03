@@ -1,0 +1,53 @@
+# ------------------------------------------------------
+# GLOBAL
+# ------------------------------------------------------
+node_modules/
+.env
+.env.local
+.env.development
+.env.production
+dist/
+build/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# ------------------------------------------------------
+# FRONTEND (React + Vite)
+# ------------------------------------------------------
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+frontend/.vite/
+
+# ------------------------------------------------------
+# BACKEND (Node.js / Express)
+# ------------------------------------------------------
+backend/node_modules/
+backend/.env
+backend/.env.*
+backend/dist/
+backend/tmp/
+backend/uploads/
+
+# Ignore debug output
+backend/debug.log
+
+# ------------------------------------------------------
+# GIT / BUILD / CI
+# ------------------------------------------------------
+.github/token.txt
+coverage/
