@@ -1,10 +1,10 @@
 import axios from "axios";
-
+const API_URL_BASE = import.meta.env.VITE_BASE_URL
 
 export async function GetLoggedInUser(){
     const res = await axios({
         method:'get',
-        url:`http://localhost:4000/api/v1/users/get-me`,
+        url:`${API_URL_BASE}/api/v1/users/get-me`,
         headers:{
             'Content-Type':'application/json'
         },
