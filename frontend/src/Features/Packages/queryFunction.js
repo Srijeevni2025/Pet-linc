@@ -25,6 +25,6 @@ export async function GetAddOns(){
             'Content-Type':'application/json'
         }
     })
-    console.log(res.data)
+    
     return res.data.data
 }

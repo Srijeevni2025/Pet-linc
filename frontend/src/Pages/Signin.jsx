@@ -75,7 +75,7 @@ export default function SignIn() {
       {/* Illustration */}
       <div className="hidden md:flex flex-col items-center justify-center w-1/2 animate-fadeIn">
         <img
-          src="/hero-section-pic.png"
+          src="/puppy.png"
           alt="Cute pets"
           className="w-[380px] drop-shadow-2xl animate-float"
         />
