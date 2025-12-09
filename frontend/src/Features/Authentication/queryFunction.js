@@ -1,6 +1,6 @@
 import axios from "axios";
 const API_URL_BASE = import.meta.env.VITE_BASE_URL
-
+// import.meta.env.VITE_BASE_URL
 export async function GetLoggedInUser(){
     const res = await axios({
         method:'get',
@@ -12,6 +12,6 @@ export async function GetLoggedInUser(){
        
         
     })
-    
+    console.log(res.data)
     return res.data;
 }

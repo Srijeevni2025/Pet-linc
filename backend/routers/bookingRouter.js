@@ -8,5 +8,6 @@ router.route('/create-new-booking').post(authController.protect, bookingControll
 router.route('/get-all-bookings').get(authController.protect, bookingController.getAllBookings);
 router.route('/create-addon').post(addonController.createAddon)
 router.route('/get-all-addons').get(addonController.getAllAddons);
+router.route('/get-all-bookings-for-dashboard').get(bookingController.getAllBookingsForDashboard)
 
 module.exports = router;

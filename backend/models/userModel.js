@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { default: isEmail } = require("validator/lib/isEmail");
+const { select } = require("framer-motion/client");
 const userSchema = new mongoose.Schema({
     name:String,
     email: {
@@ -19,9 +20,11 @@ const userSchema = new mongoose.Schema({
         minLength:6,
         maxLength:8,
         
+        
     }, 
     passwordConfirm:{
         type: String,
+        
         validate:{
             validator:function(val){
                 return val === this.password;

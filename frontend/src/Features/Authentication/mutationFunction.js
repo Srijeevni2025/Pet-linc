@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const API_URL_BASE = import.meta.env.VITE_BASE_URL
-
+// import.meta.env.VITE_BASE_URL
 
 export async function Login({email, password}){
     const res = await axios({
@@ -19,7 +19,7 @@ export async function Login({email, password}){
         },
         withCredentials:true
     });
-    
+    console.log(res.data)
     return res.data;
 }
 

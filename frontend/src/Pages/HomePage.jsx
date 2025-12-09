@@ -13,7 +13,7 @@ function HomePage(){
         <>
         <Navbar/>
         <HomePageHeroSection/>
-        <GroomingCategory/>
+        <GroomingCategory id = "grooming-category"/>
         <WhyChooseUs/>
         <TestimonialVideos/>
         <GroomerCTA/>

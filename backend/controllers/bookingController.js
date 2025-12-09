@@ -27,3 +27,13 @@ exports.getAllBookings = catchAsync(async(req, res, next)=>{
         data:bookings
     })
 })
+
+exports.getAllBookingsForDashboard = catchAsync(async(req, res, next)=>{
+   
+    
+    const bookings = await Booking.find().select(-'password').populate('addons productId userId');
+    res.status(200).json({
+        status:"success",
+        data:bookings
+    })
+})
