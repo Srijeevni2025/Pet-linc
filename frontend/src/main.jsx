@@ -13,7 +13,14 @@ import BookingSuccess from "./Components/BookingSuccess";
 import MyBookings from "./Pages/MyBookings";
 import { Toaster } from "react-hot-toast";
 import MyProfile from "./Pages/MyProfile";
-
+import Signup from "./Pages/Signup";
+import AboutUs from "./Pages/AboutUs";
+import Careers from "./Pages/Careers";
+import CustomerPolicy from "./Pages/CustomerPolicy";
+import FAQs from "./Pages/FAQs";
+import SupportPage from "./Pages/Support";
+import BecomePartner from "./Components/BecomeGroomerForm";
+import AdminDashboard from "./Pages/AdminDashboard";
 
 
 
@@ -27,10 +34,17 @@ root.render(<React.StrictMode>
     <Routes>
         <Route index element = {<App/>}/>
         <Route path = "/signin" element = {<SignIn/>}/>
+        <Route path = "/signup" element = {<Signup/>}/>
         <Route path="/booking-success" element={<BookingSuccess />} />
         <Route path="/my-bookings" element = {<MyBookings/>}/>
         <Route path = "/my-profile" element = {<MyProfile/>}/>
-
+        <Route path = "/about" element = {<AboutUs/>}/>
+        <Route path = "/careers" element = {<Careers/>}/>
+        <Route path = "/customerpolicy" element = {<CustomerPolicy/>}/>
+        <Route path = "/faq" element = {<FAQs/>}/>
+        <Route path = "/support" element = {<SupportPage/>}/>
+        <Route path = "/becomepartner" element = {<BecomePartner/>}/>
+        <Route path = "/admin-dashboard" element = {<AdminDashboard/>}/>
         
     </Routes>
 </BrowserRouter>

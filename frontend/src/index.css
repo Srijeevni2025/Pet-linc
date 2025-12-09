@@ -1,1 +1,36 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+
+
+@keyframes level13Open {
+  0% { transform: translateY(18px) scale(0.96); opacity: 0; filter: blur(6px); }
+  60% { transform: translateY(-6px) scale(1.02); opacity: 1; filter: blur(2px); }
+  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+/* fallback fade */
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+/* subtle card float for hover */
+@keyframes subtleFloat {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* reduced-motion respect */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* small helper for input focus */
+.input-glow:focus {
+  box-shadow: 0 6px 30px rgba(255,140,30,0.10);
+}
+
+/* optional shimmer used by other pieces */
+.shimmer {
+  background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%),
+}

@@ -1,7 +1,8 @@
 import axios from 'axios'
-const API_URL_BASE = import.meta.env.VITE_BASE_URL
-
+const API_URL_BASE =  import.meta.env.VITE_BASE_URL
+//import.meta.env.VITE_BASE_URL ||
 export async function GetAllPackages(){
+    console.log("Get packages function is called.")
     const res = await axios({
         method:'get',
         url:`${API_URL_BASE}/api/v1/packages/get-all-packages`,

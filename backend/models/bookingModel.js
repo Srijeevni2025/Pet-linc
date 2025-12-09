@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 const AddOn = require('./addonModel');
 const Packages = require('./packageModel')
+const User = require('./userModel')
 
 const bookingSchema = new mongoose.Schema({
     productId:{
         type:mongoose.Schema.ObjectId,
         ref:'Packages'
     },
-    userId:mongoose.Schema.ObjectId,
+    userId:{
+        type:mongoose.Schema.ObjectId,
+        ref:'User'
+    },
     petName:{
         type:String,
         required:[true, "A pet name must be there."]

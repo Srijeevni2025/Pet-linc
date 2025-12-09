@@ -1,67 +1,49 @@
-import { useMutation } from "@tanstack/react-query";
 
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import { PawPrint, Loader2 } from "lucide-react";
-import { Login } from "../Features/Authentication/mutationFunction";
 import queryClient from "../Store/queryClient";
 
-import axios from "axios";
+import { PawPrint, Loader2 } from "lucide-react";
 
-// It only works for the variables defined with VITE as their starting point.
 const BASE_URL = import.meta.env.VITE_BASE_URL
-//import.meta.env.VITE_BASE_URL;
-console.log(BASE_URL);
-export default function SignIn() {
-  const { register, handleSubmit } = useForm();
+// import.meta.env.VITE_BASE_URL;
+export default function Signup() {
   const navigate = useNavigate();
-  // logging in using react query
-  const {isPending, mutate} = useMutation({
-    mutationFn:Login,
-    onSuccess:async (data)=>{
-        
-        toast.success("Welcome back");
-        // We need to invalidate queries data because mutation does not udpate cached data.
-       await queryClient.invalidateQueries(["userData"])
-        navigate('/');
+  const { register, handleSubmit, reset } = useForm();
 
-    }
-  })
+  const { isPending, mutate } = useMutation({
+    mutationFn: async ({ name, email, password, passwordConfirm }) => {
+      const res = await axios({
+        method: "POST",
+        url: `${BASE_URL}/api/v1/users/signup`,
+        headers: { "Content-Type": "application/json" },
+        data: { name, email, password, passwordConfirm },
+        withCredentials: true,
+      });
+      return res.data;
+    },
+    onSuccess: async () => {
+       await queryClient.invalidateQueries(["userData"]);
+      toast.success("Account created successfully 🎉");
+      reset();
+      navigate("/");
+    },
+    onError: async (err) => {
+      console.log(err);
+      toast.error(err.response?.data?.message || "Signup failed");
+    },
+  });
 
-  // // implementing google oauth
-  // const handleGoogleLogin = async(credentialResponse)=>{
-  //   const decoded = jwtDecode(credentialResponse.credential);
-
-  //   const res = await axios.post(
-  //     "http://localhost:4000/api/v1/users/google-login",
-  //     {
-  //       email:decoded.email,
-  //       name:decoded.name,
-  //       googleId:decoded.sub,
-  //       avatar:decoded.picture
-  //     }
-  //   )
-
-  //       localStorage.setItem("accessToken", res.data.accessToken);
-  //   localStorage.setItem("refreshToken", res.data.refreshToken);
-
-  //   window.location.href = "/";   // redirect after login
-  // }
-
-
-
-  // Handler function that is called when login button is pressed.
-  async function onSubmit(data) {
-    
-    mutate({email:data.email, password: data.password});
+  function onSubmit(data) {
+    mutate(data);
   }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center relative bg-gradient-to-br from-orange-100 via-white to-orange-50 overflow-hidden">
-      {/* Background Glow Circles */}
+      {/* Background Glows */}
       <div className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-orange-200 rounded-full blur-3xl opacity-30"></div>
       <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-orange-300 rounded-full blur-3xl opacity-20"></div>
 
@@ -75,20 +57,20 @@ export default function SignIn() {
       {/* Illustration */}
       <div className="hidden md:flex flex-col items-center justify-center w-1/2 animate-fadeIn">
         <img
-          src="/puppy.png"
+          src="/hero-section-pic.png"
           alt="Cute pets"
           className="w-[380px] drop-shadow-2xl animate-float"
         />
         <h2 className="mt-6 text-3xl font-extrabold text-orange-700">
-          Because They Deserve the Best ❤️
+          Join the Petlinc Family 🐶🐱
         </h2>
         <p className="text-gray-600 mt-2 text-center max-w-md leading-relaxed">
-          Book grooming, vet visits, and more — all in one place. <br />
-          Petlinc keeps tails wagging and paws happy!
+          Discover the easiest way to book trusted pet grooming and wellness
+          services near you.
         </p>
       </div>
 
-      {/* Sign In Card */}
+      {/* Sign Up Card */}
       <div className="w-full md:w-[420px] bg-white/90 backdrop-blur-xl border border-orange-100 rounded-3xl shadow-xl p-8 relative z-10 transform transition-all hover:shadow-orange-100/60 hover:-translate-y-[2px] animate-fadeUp">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center bg-orange-100 w-16 h-16 rounded-full shadow-md">
@@ -98,16 +80,29 @@ export default function SignIn() {
             Petlinc
           </h1>
           <p className="text-sm text-gray-500">
-            Your Pet’s Happiness, Our Priority 🐶🐱
+            Because They’re Family Too ❤️
           </p>
         </div>
 
         <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
-          Welcome Back 👋
+          Create Your Account
         </h2>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              required
+              {...register("name")}
+              placeholder="John Doe"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -115,34 +110,40 @@ export default function SignIn() {
             <input
               type="email"
               required
-              {...register("email", { value: "test@gmail.com" })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
+              {...register("email")}
               placeholder="you@example.com"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              required
-              {...register("password", { value: "rajan1" })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
-              placeholder="••••••••"
-            />
-            <div className="flex justify-end mt-1">
-              <Link
-                to="/forgot-password"
-                className="text-xs text-orange-600 hover:underline"
-              >
-                Forgot Password?
-              </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                {...register("password")}
+                placeholder="********"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                required
+                {...register("passwordConfirm")}
+                placeholder="********"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
+              />
             </div>
           </div>
 
-          {/* Button */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={isPending}
@@ -154,10 +155,10 @@ export default function SignIn() {
           >
             {isPending ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" /> Signing In...
+                <Loader2 className="w-5 h-5 animate-spin" /> Creating Account...
               </>
             ) : (
-              "Sign In"
+              "Sign Up"
             )}
           </button>
 
@@ -168,7 +169,7 @@ export default function SignIn() {
             <div className="flex-1 h-px bg-gray-200"></div>
           </div>
 
-          {/* Social Login */}
+          {/* Social Signup */}
           <button
             type="button"
             className="w-full py-2 border border-gray-300 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-all text-gray-700 font-medium"
@@ -176,20 +177,16 @@ export default function SignIn() {
             <img src="/google.svg" alt="Google" className="w-5 h-5" />
             Continue with Google
           </button>
-          {/* <GoogleLogin 
-          onSuccess={handleGoogleLogin}
-          onError={()=>console.log("google login failed")}
-          />*/}
-        </form> 
+        </form>
 
-        {/* Sign Up Link */}
+        {/* Sign In Redirect */}
         <div className="mt-6 text-center text-sm text-gray-600">
-          Don’t have an account?{" "}
+          Already have an account?{" "}
           <Link
-            to="/signup"
+            to="/signin"
             className="text-orange-600 font-medium hover:underline"
           >
-            Sign Up
+            Sign In
           </Link>
         </div>
       </div>
