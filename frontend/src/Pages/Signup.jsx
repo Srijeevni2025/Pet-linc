@@ -8,7 +8,7 @@ import queryClient from "../Store/queryClient";
 
 import { PawPrint, Loader2 } from "lucide-react";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
+const BASE_URL = "import.meta.env.VITE_BASE_URL"
 // import.meta.env.VITE_BASE_URL;
 export default function Signup() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL_BASE = "http://localhost:4000"
+const API_URL_BASE = "import.meta.env.VITE_BASE_URL"
 // import.meta.env.VITE_BASE_URL
 export async function GetMyBookings(){
     const res = await axios({
@@ -10,5 +10,6 @@ export async function GetMyBookings(){
         },
         withCredentials:true
     })
+    
     return res.data
 }
