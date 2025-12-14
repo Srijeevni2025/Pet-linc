@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 
-const API_URL_BASE = import.meta.env.VITE_BASE_URL
+const API_URL_BASE = "http://localhost:4000"
 // import.meta.env.VITE_BASE_URL
 
 export async function Login({email, password}){

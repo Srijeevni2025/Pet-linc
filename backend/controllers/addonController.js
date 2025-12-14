@@ -1,3 +1,4 @@
+const Coupans = require('../models/coupanModel');
 const AddOn = require('./../models/addonModel')
 const catchAsync = require('./../utils/catchAsync')
 
@@ -12,9 +13,12 @@ exports.createAddon = catchAsync(async(req, res, next)=>{
 })
 
 exports.getAllAddons = catchAsync(async(req, res, next)=>{
-    const addons = await AddOn.find();
+    let addons = await AddOn.find();
+    const coupans = await Coupans.find();
+    console.log(addons, coupans);
     res.status(200).json({
         status:"success",
-        data:addons
+        data:addons,
+        coupans
     })
 })

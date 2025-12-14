@@ -6,6 +6,7 @@ import { useContext } from "react";
 import BookingModal from "./BookingModal";
 import { GetAllPackages } from "../Features/Packages/queryFunction";
 import { useQuery } from "@tanstack/react-query";
+import Loader from "./Loader";
 
 export default function GroomingPackagesPage() {
   const {
@@ -13,7 +14,7 @@ export default function GroomingPackagesPage() {
     setShowBookingModal,
     setSelectedPackage,
     setStepBookingModal,
-    selectedPackage,
+   
   } = useContext(GlobalContext);
 
   const openModal = (pkg) => {
@@ -27,7 +28,7 @@ export default function GroomingPackagesPage() {
     queryFn: GetAllPackages,
   });
   if (isPending) {
-    return <h1>loadiinggggggg</h1>;
+    return <Loader/>;
   }
 
   const addons = [
