@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL_BASE =  "import.meta.env.VITE_BASE_URL"
+const API_URL_BASE =  import.meta.env.VITE_BASE_URL
 //import.meta.env.VITE_BASE_URL ||
 console.log(API_URL_BASE)
 export async function GetAllPackages(){
