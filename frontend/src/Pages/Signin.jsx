@@ -12,7 +12,7 @@ import queryClient from "../Store/queryClient";
 import axios from "axios";
 
 // It only works for the variables defined with VITE as their starting point.
-const BASE_URL = "http://localhost:4000"
+const BASE_URL = "import.meta.env.VITE_BASE_URL"
 //import.meta.env.VITE_BASE_URL;
 console.log(BASE_URL);
 export default function SignIn() {
@@ -36,7 +36,7 @@ export default function SignIn() {
   //   const decoded = jwtDecode(credentialResponse.credential);
 
   //   const res = await axios.post(
-  //     "http://localhost:4000/api/v1/users/google-login",
+  //     "import.meta.env.VITE_BASE_URL/api/v1/users/google-login",
   //     {
   //       email:decoded.email,
   //       name:decoded.name,
