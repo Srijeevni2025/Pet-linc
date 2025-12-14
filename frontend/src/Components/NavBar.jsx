@@ -192,7 +192,7 @@ export default function Navbar() {
             {/* Auth */}
             {userData ? (
               <>
-                <Link to="/my-profile" className="block text-sm text-gray-700">
+                <Link to="/my-profile" replace className="block text-sm text-gray-700">
                   My Profile
                 </Link>
                 <Link to="/my-bookings" className="block text-sm text-gray-700">

@@ -83,9 +83,7 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li className="hover:text-orange-400 transition">Dog Grooming</li>
             <li className="hover:text-orange-400 transition">Cat Grooming</li>
-            <li className="hover:text-orange-400 transition">Vet Consultations</li>
             <li className="hover:text-orange-400 transition">Pet Spa at Home</li>
-            <li className="hover:text-orange-400 transition">Pet Pickup Service</li>
           </ul>
         </div>
 
@@ -105,12 +103,12 @@ export default function Footer() {
               🐦
             </a>
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=61581035999304"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-orange-400 transition transform hover:scale-110"
             >
-              📘
+            <img src = "/facebook_icon.png"/>
             </a>
             <a
               href="https://instagram.com"

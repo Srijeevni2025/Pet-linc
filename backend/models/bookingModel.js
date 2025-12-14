@@ -43,7 +43,10 @@ const bookingSchema = new mongoose.Schema({
     addons:[{
         type:mongoose.Schema.ObjectId,
         ref:AddOn,
-    }]
+    }],
+    coupan:String,
+    discount:Number,
+    bookingMarkedPrice:String
 })
 
 

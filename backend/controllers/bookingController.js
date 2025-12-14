@@ -1,16 +1,19 @@
+
+const Package = require('./../models/packageModel')
 const AddOn = require("../models/addonModel");
 const catchAsync = require("../utils/catchAsync");
 const Booking = require('./../models/bookingModel')
 
 
 exports.createNewBooking = catchAsync(async(req, res, next)=>{
-    const {petName, type:petType, breed, age, weight, notes, address, date, timeSlot, addons} = req.body;
+    const {petName, type:petType, breed, age, weight, notes, address, date, timeSlot, addons, coupan, couponId, discount, } = req.body;
     
     
     const userId = req.user._id;
 
     const productId = req.body.productId;
-    const booking = await Booking.create({userId, productId, petName, petType, breed, age, weight, notes, address, date, timeSlot, addons});
+    const bookingMarkedPrice = await Package.findById({_id:productId}).select('price');
+    const booking = await Booking.create({userId, productId, petName, petType, breed, age, weight, notes, address, date, timeSlot, addons, coupan, discount,bookingMarkedPrice: bookingMarkedPrice.price});
 
     res.status(200).json({
         status:"success",

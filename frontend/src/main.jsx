@@ -21,11 +21,12 @@ import FAQs from "./Pages/FAQs";
 import SupportPage from "./Pages/Support";
 import BecomePartner from "./Components/BecomeGroomerForm";
 import AdminDashboard from "./Pages/AdminDashboard";
+import BookingDetails from "./Pages/BookingDetails";
 
 
 
 const root = reactDOM.createRoot(document.getElementById('root'));
-root.render(<React.StrictMode>
+root.render(//<React.StrictMode>
 <ContextProvider>
 <QueryClientProvider client = {queryClient}>
 <ReactQueryDevtools initialIsOpen = {true}/>
@@ -45,6 +46,7 @@ root.render(<React.StrictMode>
         <Route path = "/support" element = {<SupportPage/>}/>
         <Route path = "/becomepartner" element = {<BecomePartner/>}/>
         <Route path = "/admin-dashboard" element = {<AdminDashboard/>}/>
+        <Route path = "/my-bookings/:id" element = {<BookingDetails/>}/>
         
     </Routes>
 </BrowserRouter>
@@ -71,4 +73,5 @@ root.render(<React.StrictMode>
     />
 </ContextProvider>
     
-</React.StrictMode>)
+//</React.StrictMode>
+)

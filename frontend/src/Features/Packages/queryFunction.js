@@ -1,6 +1,7 @@
 import axios from 'axios'
-const API_URL_BASE =  import.meta.env.VITE_BASE_URL
+const API_URL_BASE =  "http://localhost:4000"
 //import.meta.env.VITE_BASE_URL ||
+console.log(API_URL_BASE)
 export async function GetAllPackages(){
     console.log("Get packages function is called.")
     const res = await axios({
@@ -15,7 +16,7 @@ export async function GetAllPackages(){
 
     })
     console.log(res.data.data);
-    return res.data.data;
+    return res.data.data
 }
 
 export async function GetAddOns(){
@@ -26,6 +27,6 @@ export async function GetAddOns(){
             'Content-Type':'application/json'
         }
     })
-    
-    return res.data.data
+    console.log(res.data)
+    return res.data
 }

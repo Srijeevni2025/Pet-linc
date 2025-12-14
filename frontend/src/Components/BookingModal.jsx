@@ -568,6 +568,8 @@ export default function BookingModal() {
     timeSlot: "",
     addons: [],
     coupan:"",
+    coupanId:"",
+    discount:"",
     agreedToTerms: false,
   });
 
@@ -577,6 +579,7 @@ export default function BookingModal() {
   const [coupon, setCoupon] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null); // store code
   const [discount, setDiscount] = useState(0);
+  const [couponId, setCouponId] = useState("");
 
   
 
@@ -593,14 +596,22 @@ export default function BookingModal() {
     which costs 100/- per peice which will be handed over to you."
   ];
 
-  const { data: addonsList = [], isPending } = useQuery({
-    queryKey: ["addonsList"],
+  const { data: addons, isPending } = useQuery({
+    queryKey: ["addons"],
     queryFn: GetAddOns,
   });
+ let addonsList = addons?.data;
+ let coupans = addons?.coupans;
 
   useEffect(() => {
     setForm((f) => ({ ...f, productId: selectedPackage?._id }));
   }, [selectedPackage]);
+
+  useEffect( ()=>{
+     setForm((f)=>({...f, discount:discount, couponId:couponId}));
+  }, [couponId, discount])
+
+
 
   const [step, setStep] = useState(1);
 
@@ -653,28 +664,30 @@ export default function BookingModal() {
       return;
     }
     // Example coupon rules — change to real validation (API) as desired
-    if (code === "PET10") {
-      const amt = Math.round(grandTotal * 0.10 * 100) / 100;
-      setDiscount(amt);
-      setAppliedCoupon(code);
-      toast.success("Coupon Applied: 10% OFF");
-    } else if (code === "NEW50") {
-      const amt = 50;
-      setDiscount(Math.min(amt, grandTotal)); // don't exceed total
-      setAppliedCoupon(code);
-      toast.success("₹50 OFF Applied");
-    } else {
+    for(let index = 0; index < coupans.length; index++){
+      if(coupans[index].coupan === code){
+         const amt = Math.round(grandTotal * coupans[index].percent ) / 100;
+        setDiscount(amt);
+        setAppliedCoupon(code);
+        setCouponId(coupans[index]._id);
+        toast.success(`Coupon Applied: ${coupans[index].percent}% OFF`);
+        break
+      }  else {
       setDiscount(0);
       setAppliedCoupon(null);
+      setCouponId(null);
       toast.error("Invalid Coupon");
     }
   }
+}
 
   function clearCoupon() {
     setCoupon("");
     setAppliedCoupon(null);
     setDiscount(0);
+    setCouponId(null);
   }
+
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex justify-center items-center z-[999] p-2 md:p-4">
@@ -806,99 +819,90 @@ export default function BookingModal() {
                 </div>
               </div>
             )}
+            
 
-            {/* STEP 2 */}
-            {step === 2 && (
-              <div className="space-y-5">
+           {step === 2 && (
+  <div className="space-y-5">
+
+    <div>
+      <label className="text-sm font-semibold text-gray-600">Contact Number</label>
+      <input
+        type="number"
+        value={form.mobile}
+        required
+        onChange={(e) => setForm({ ...form, mobile: e.target.value })}
+        className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
+      />
+    </div>
+
+    <div>
+      <label className="text-sm font-semibold text-gray-600">Address</label>
+      <input
+        type="text"
+        value={form.address}
+        onChange={(e) => setForm({ ...form, address: e.target.value })}
+        className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
+      />
+    </div>
+
+    <div>
+      <label className="text-sm font-semibold text-gray-600">Preferred Date</label>
+      <input
+        type="date"
+        value={form.date}
+        onChange={(e) => setForm({ ...form, date: e.target.value })}
+        className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
+      />
+    </div>
+
+    <div>
+      <label className="text-sm font-semibold text-gray-600">Preferred Time Slot</label>
+      <select
+        value={form.timeSlot}
+        onChange={(e) => setForm({ ...form, timeSlot: e.target.value })}
+        className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
+      >
+        <option value="">Select Slot</option>
+        <option>10 AM - 12 PM</option>
+        <option>12 PM - 2 PM</option>
+        <option>2 PM - 4 PM</option>
+        <option>4 PM - 6 PM</option>
+      </select>
+    </div>
+
+    {/* ---------------- ALWAYS VISIBLE TERMS & CONDITIONS ---------------- */}
+    <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900 mb-3">
+        Terms & Conditions
+      </h3>
+
+      <div className="space-y-2 text-sm text-gray-700 leading-relaxed">
+        {termsText.map((t, i) => (
+          <p key={i}>• {t}</p>
+        ))}
+      </div>
+
+      <label className="flex items-center gap-3 mt-4">
+        <input
+          type="checkbox"
+          checked={form.agreedToTerms}
+          required
+          onChange={(e) =>
+            setForm({ ...form, agreedToTerms: e.target.checked })
+          }
+        />
+        <span className="text-gray-700 text-sm">
+          I agree to the Terms & Conditions
+        </span>
+      </label>
+    </div>
+  </div>
+)}
 
 
-                <div>
-                  <label className="text-sm font-semibold text-gray-600">Contact Number</label>
-                  <input
-                    type= "number"
-                    value={form.mobile}
-                    required
-                    onChange={(e) => setForm({ ...form, mobile: e.target.value })}
-                    className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
-                  />
-                </div>
 
-                <div>
-                  <label className="text-sm font-semibold text-gray-600">Address</label>
-                  <input
-                    type="text"
-                    value={form.address}
-                    onChange={(e) => setForm({ ...form, address: e.target.value })}
-                    className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
-                  />
-                </div>
 
-                <div>
-                  <label className="text-sm font-semibold text-gray-600">Preferred Date</label>
-                  <input
-                    type="date"
-                    value={form.date}
-                    onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
-                  />
-                </div>
 
-                <div>
-                  <label className="text-sm font-semibold text-gray-600">Preferred Time Slot</label>
-                  <select
-                    value={form.timeSlot}
-                    onChange={(e) => setForm({ ...form, timeSlot: e.target.value })}
-                    className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
-                  >
-                    <option value="">Select Slot</option>
-                    <option>10 AM - 12 PM</option>
-                    <option>12 PM - 2 PM</option>
-                    <option>2 PM - 4 PM</option>
-                    <option>4 PM - 6 PM</option>
-                  </select>
-                </div>
-
-                {/* Accordion: Terms & Conditions + Customer Items */}
-                <div className="border rounded-xl bg-white">
-                  <button
-                    onClick={() => setAccordionOpen((s) => !s)}
-                    className="w-full flex justify-between items-center px-4 py-3 font-medium text-gray-700"
-                    aria-expanded={accordionOpen}
-                  >
-                    Terms & Conditions (tap to expand)
-                    <span>{accordionOpen ? "▲" : "▼"}</span>
-                  </button>
-
-                  {accordionOpen && (
-                    <div className="px-4 py-3 space-y-3">
-                      {/* Terms text */}
-                      <div className="text-sm text-gray-700 space-y-2">
-                        {termsText.map((t, i) => (
-                          <p key={i}>• {t}</p>
-                        ))}
-                      </div>
-
-                      {/* Agreement checkbox */}
-                      <label className="flex items-center gap-3 mt-2">
-                        <input
-                          type="checkbox"
-                          checked={form.agreedToTerms}
-                          required
-                          onChange={(e) => setForm({ ...form, agreedToTerms: e.target.checked })}
-                        />
-                        <span className="text-gray-700 text-sm">I agree to terms & conditions</span>
-                      </label>
-
-                      {/* Divider */}
-                      <div className="border-t pt-3"></div>
-
-                      {/* Customer will provide checklist */}
-                     
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
 
             {/* STEP 3 */}
             {step === 3 && (
