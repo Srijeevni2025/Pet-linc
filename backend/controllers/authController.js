@@ -8,7 +8,7 @@ const Email = require("./../utils/email");
 
 // signing token to sent to user after signup and login
 const signToken = id=>{
-    return jwt.sign({_id:id}, process.env.JWT_SECRET, {expiresIn:60*60*1000})
+    return jwt.sign({_id:id}, process.env.JWT_SECRET, {expiresIn:"1h"})
 }
 
 
@@ -43,9 +43,10 @@ exports.signup = catchAsync(async(req, res, next)=>{
     // attaching cookie with response
     res.cookie('jwt', token, {
         expires: new Date(Date.now() + 60*60*1000),
-        //secure:true,
+        secure:true,
         
-        httpOnly:true
+        httpOnly:true,
+        sameSite:"none"
     })
     res.status(200).json({
         status:"success",
