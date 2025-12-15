@@ -281,7 +281,8 @@ export default function Navbar() {
   const { data: userData } = useQuery({
     queryKey: ["userData"],
     queryFn: GetLoggedInUser,
-    retry: false,
+    retry: true,
+    
   });
 
   /* ---------------- LOGOUT ---------------- */
@@ -293,7 +294,7 @@ export default function Navbar() {
       navigate("/", { replace: true });
     },
   });
-  console.log(userData)
+ 
   /* ---------------- OUTSIDE CLICK ---------------- */
   useEffect(() => {
     const handler = (e) => {
