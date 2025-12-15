@@ -22,6 +22,9 @@ import SupportPage from "./Pages/Support";
 import BecomePartner from "./Components/BecomeGroomerForm";
 import AdminDashboard from "./Pages/AdminDashboard";
 import BookingDetails from "./Pages/BookingDetails";
+import { SpeedInsights } from "@vercel/speed-insights/react"
+
+
 
 
 
