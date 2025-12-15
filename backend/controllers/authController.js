@@ -8,7 +8,7 @@ const Email = require("./../utils/email");
 
 // signing token to sent to user after signup and login
 const signToken = id=>{
-    return jwt.sign({_id:id}, process.env.JWT_SECRET, {expiresIn:60*1000})
+    return jwt.sign({_id:id}, process.env.JWT_SECRET, {expiresIn:60*60*1000})
 }
 
 
@@ -39,10 +39,10 @@ exports.signup = catchAsync(async(req, res, next)=>{
     // sending email
 
     const emailObj = new Email({partnerName:newUser.name, to:"rajan@gmail.com"});
-    await emailObj.sendWelcome('welcomePartner')
+    
     // attaching cookie with response
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 6*1000),
+        expires: new Date(Date.now() + 60*60*1000),
         //secure:true,
         
         httpOnly:true
@@ -80,7 +80,7 @@ exports.login = catchAsync(async(req, res, next)=>{
     
     //creating cookies
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 60*5*1000),
+        expires: new Date(Date.now() + 60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
         sameSite:'none'

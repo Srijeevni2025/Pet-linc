@@ -26,6 +26,13 @@ app.use(cors({
 app.use(cookieParser());
 
 // mounting api routes
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    time: new Date().toISOString(),
+  });
+});
+
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/groomers", groomerRouter)
