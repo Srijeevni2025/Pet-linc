@@ -44,7 +44,7 @@ export default function Navbar() {
             queryClient.removeQueries({queryKey:['userData'], exact:true})
            //await queryClient.ensureQueryData({queryKey:["packages"], queryFn:GetAllPackages})
             
-          navigate('/', {replace:true, })
+          navigate('/', {replace:true})
         
     }
   })

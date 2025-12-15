@@ -169,7 +169,11 @@ exports.protect = catchAsync(async(req, res, next)=>{
 // logging out user
 
 exports.logout = catchAsync(async(req, res, next)=>{
-    res.clearCookie('jwt');
+    res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: true,
+        sameSite:"None"
+    });
     res.status(200).json({
         status:"success",
         message:"Logged out successfully."
