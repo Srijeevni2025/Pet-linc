@@ -8,7 +8,7 @@ import queryClient from "../Store/queryClient";
 
 import { PawPrint, Loader2 } from "lucide-react";
 
-const BASE_URL = "import.meta.env.VITE_BASE_URL"
+const BASE_URL = import.meta.env.VITE_BASE_URL
 // import.meta.env.VITE_BASE_URL;
 export default function Signup() {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function Signup() {
       {/* Illustration */}
       <div className="hidden md:flex flex-col items-center justify-center w-1/2 animate-fadeIn">
         <img
-          src="/hero-section-pic.png"
+          src="/puppy.png"
           alt="Cute pets"
           className="w-[380px] drop-shadow-2xl animate-float"
         />
