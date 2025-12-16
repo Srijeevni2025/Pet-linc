@@ -46,7 +46,7 @@ exports.signup = catchAsync(async(req, res, next)=>{
         secure:true,
         
         httpOnly:true,
-        sameSite:"none"
+        sameSite:"None"
     })
     res.status(200).json({
         status:"success",
@@ -54,7 +54,7 @@ exports.signup = catchAsync(async(req, res, next)=>{
             name:newUser.name,
             email:newUser.email
         },
-        token
+        
     })
 })
 
@@ -84,7 +84,7 @@ exports.login = catchAsync(async(req, res, next)=>{
         expires: new Date(Date.now() + 60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
-        sameSite:'none'
+        sameSite:'None'
     })
 
     
