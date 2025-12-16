@@ -18,9 +18,10 @@ const coupanRouter = require('./routers/coupanRouter');
 
 // Applying middlewares
 app.set('view engine', ejs);
+app.set('trust proxy', 1)
 app.use(express.json());  // middleware to parse the request body
 app.use(cors({
-    origin:["http://localhost:5173", "http://192.168.0.108:5173", "https://pet-linc-z3ed.vercel.app", "https://rheologic-alana-minutial.ngrok-free.dev","https://2wwpqd0t-5173.inc1.devtunnels.ms/", "https://rheologic-alana-minutial.ngrok-free.dev", "*"],
+    origin:["https://petlinc.in","http://localhost:5173", "http://192.168.0.108:5173", "https://pet-linc-z3ed.vercel.app", "https://rheologic-alana-minutial.ngrok-free.dev","https://2wwpqd0t-5173.inc1.devtunnels.ms/", "https://rheologic-alana-minutial.ngrok-free.dev", "*"],
     credentials:true
 }))
 app.use(cookieParser());

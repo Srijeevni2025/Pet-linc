@@ -46,7 +46,8 @@ exports.signup = catchAsync(async(req, res, next)=>{
         secure:true,
         
         httpOnly:true,
-        sameSite:"None"
+        sameSite:"none",
+        domain:".petlinc.in"
     })
     res.status(200).json({
         status:"success",
@@ -84,7 +85,8 @@ exports.login = catchAsync(async(req, res, next)=>{
         expires: new Date(Date.now() + 60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
-        sameSite:'None'
+        sameSite:'None',
+        domain:".petlinc.in"
     })
 
     
