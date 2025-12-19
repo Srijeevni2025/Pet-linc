@@ -175,7 +175,9 @@ exports.logout = catchAsync(async(req, res, next)=>{
     res.clearCookie('jwt', {
         httpOnly: true,
         secure: true,
-        sameSite:"None"
+        sameSite:"None",
+        path:'/',
+        domain:".petlinc.in"
     });
     res.status(200).json({
         status:"success",
