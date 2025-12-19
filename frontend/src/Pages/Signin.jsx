@@ -119,7 +119,7 @@ export default function SignIn() {
             <input
               type="email"
               required
-              {...register("email", { value: "test@gmail.com" })}
+              {...register("email")}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
               placeholder="you@example.com"
             />
@@ -132,7 +132,7 @@ export default function SignIn() {
             <input
               type="password"
               required
-              {...register("password", { value: "rajan1" })}
+              {...register("password")}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none transition-all"
               placeholder="••••••••"
             />
