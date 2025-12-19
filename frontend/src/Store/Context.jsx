@@ -1,6 +1,6 @@
-import { createContext } from "react";
+import { createContext, useRef, useEffect } from "react";
 import { useState } from "react";
-export const GlobalContext = new createContext();
+export const GlobalContext =  createContext();
 
 function ContextProvider({children}){
     
@@ -8,8 +8,31 @@ function ContextProvider({children}){
     const [showBookingModal, setShowBookingModal] = useState(false);
     const [selectedPackage, setSelectedPackage] = useState(null);
     const [stepBookingModal, setStepBookingModal] = useState(1);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const isLoggedInRef = useRef(false);
     const [selectedProduct, setSelectedProduct] = useState('')  //
+
+      const [form, setForm] = useState({
+    productId: "",
+    petName: "",
+    type: "",
+    breed: "",
+    age: "",
+    weight: "",
+    aggression: "",
+    notes: "",
+    mobile:"",
+    address: "",
+    date: "",
+    timeSlot: "",
+    addons: [],
+    coupan:"",
+    coupanId:"",
+    discount:"",
+    agreedToTerms: false,
+  });
+
+   
+
 
     return (
         <GlobalContext.Provider value = {{
@@ -20,7 +43,11 @@ function ContextProvider({children}){
             stepBookingModal,
             setStepBookingModal,
             selectedProduct, 
-            setSelectedProduct
+            setSelectedProduct,
+            isLoggedInRef,
+            form,
+            setForm
+        
         }}>
             {children}
         </GlobalContext.Provider>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MapPin, Search, ChevronDown, Menu, X } from "lucide-react";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Logout } from "../Features/Authentication/mutationFunction";
 import queryClient from "../Store/queryClient";
 import { GetAllPackages } from "../Features/Packages/queryFunction";
+import { GlobalContext } from "../Store/Context";
 
 
 export default function Navbar() {
@@ -19,7 +20,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigate = useNavigate();
- 
+  const {isLoggedInRef} = useContext(GlobalContext)
 
   
   const menuRef = useRef(null);
@@ -40,10 +41,11 @@ export default function Navbar() {
     mutationFn:Logout,
     onSuccess:async()=>{
         toast.success("Successfully logged out.");
+        
        // await queryClient.cancelQueries({queryKey: ["userData"]})
             queryClient.removeQueries({queryKey:['userData'], exact:true})
            //await queryClient.ensureQueryData({queryKey:["packages"], queryFn:GetAllPackages})
-            
+            isLoggedInRef.current = false;
           navigate('/', {replace:true})
         
     }
@@ -123,7 +125,7 @@ export default function Navbar() {
 
                 {menuOpen && (
                   <div className="absolute right-0 mt-3 w-40 bg-white border border-orange-100 rounded-xl shadow-lg py-2 z-50">
-                    <Link to="/MyProfile" className="block px-4 py-2 hover:bg-orange-50">
+                    <Link to="/my-profile" className="block px-4 py-2 hover:bg-orange-50">
                       My Profile
                     </Link>
                     <Link to="/my-bookings" className="block px-4 py-2 hover:bg-orange-50">

@@ -547,31 +547,32 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { GetAddOns } from "../Features/Packages/queryFunction";
+import ProtectedRoute from "./Protect";
 
 export default function BookingModal() {
   const navigate = useNavigate();
-  const { setShowBookingModal, selectedPackage, setSelectedPackage } =
+  const { setShowBookingModal, selectedPackage, setSelectedPackage, form, setForm } =
     useContext(GlobalContext);
 
-  const [form, setForm] = useState({
-    productId: "",
-    petName: "",
-    type: "",
-    breed: "",
-    age: "",
-    weight: "",
-    aggression: "",
-    notes: "",
-    mobile:"",
-    address: "",
-    date: "",
-    timeSlot: "",
-    addons: [],
-    coupan:"",
-    coupanId:"",
-    discount:"",
-    agreedToTerms: false,
-  });
+  // const [form, setForm] = useState({
+  //   productId: "",
+  //   petName: "",
+  //   type: "",
+  //   breed: "",
+  //   age: "",
+  //   weight: "",
+  //   aggression: "",
+  //   notes: "",
+  //   mobile:"",
+  //   address: "",
+  //   date: "",
+  //   timeSlot: "",
+  //   addons: [],
+  //   coupan:"",
+  //   coupanId:"",
+  //   discount:"",
+  //   agreedToTerms: false,
+  // });
 
   const [accordionOpen, setAccordionOpen] = useState(false);
 
@@ -603,6 +604,7 @@ export default function BookingModal() {
  let addonsList = addons?.data;
  let coupans = addons?.coupans;
 
+
   useEffect(() => {
     setForm((f) => ({ ...f, productId: selectedPackage?._id }));
   }, [selectedPackage]);
@@ -612,6 +614,8 @@ export default function BookingModal() {
   }, [couponId, discount])
 
 
+
+  
 
   const [step, setStep] = useState(1);
 
@@ -626,8 +630,8 @@ export default function BookingModal() {
     onError: async () => {
       setShowBookingModal(false);
       setSelectedPackage(null);
-      toast.error("You are not logged in! Please login.");
-      navigate("/signin");
+      toast.error("Something went wrong!!! Please contact petlinc team to book a session.");
+      navigate("/");
     },
   });
 
@@ -635,6 +639,22 @@ export default function BookingModal() {
     setShowBookingModal(false);
     setSelectedPackage(null);
   };
+
+
+  function handleNext() {
+  let error = null;
+
+  if (step === 1) error = validateStep1(form);
+  if (step === 2) error = validateStep2(form);
+
+  if (error) {
+    toast.error(error);
+    return;
+  }
+
+  setStep(step + 1);
+}
+ 
 
   function handleSubmit() {
     // optionally enforce that terms agreed
@@ -687,6 +707,26 @@ export default function BookingModal() {
     setDiscount(0);
     setCouponId(null);
   }
+   
+  function validateStep1(form) {
+  if (!form.petName) return "Pet name is required";
+  if (!form.type) return "Pet type is required";
+  if (!form.breed) return "Breed is required";
+  if (!form.age) return "Age is required";
+  if (!form.weight) return "Weight is required";
+  if (!form.aggression) return "Aggression level is required";
+  return null;
+}
+
+function validateStep2(form) {
+  if (!form.mobile) return "Mobile number is required";
+  if (form.mobile.length < 10) return "Enter valid mobile number";
+  if (!form.address) return "Address is required";
+  if (!form.date) return "Preferred date is required";
+  if (!form.timeSlot) return "Time slot is required";
+  if (!form.agreedToTerms) return "You must accept Terms & Conditions";
+  return null;
+}
 
 
   return (
@@ -849,6 +889,7 @@ export default function BookingModal() {
       <label className="text-sm font-semibold text-gray-600">Preferred Date</label>
       <input
         type="date"
+        min= {new Date().toISOString().split("T")[0]}
         value={form.date}
         onChange={(e) => setForm({ ...form, date: e.target.value })}
         className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
@@ -1034,13 +1075,13 @@ export default function BookingModal() {
           )}
 
           {step < 3 ? (
-            <button onClick={() => setStep(step + 1)} className="px-7 py-2.5 w-full max-w-[150px] rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700">
+            <button onClick={handleNext} className="px-7 py-2.5 w-full max-w-[150px] rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700">
               Next
             </button>
           ) : (
-            <button onClick={handleSubmit} className="px-7 py-2.5 w-full max-w-[180px] rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700">
+            <ProtectedRoute><button onClick={handleSubmit} className="px-7 py-2.5 w-full max-w-[180px] rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700">
               Confirm Booking
-            </button>
+            </button></ProtectedRoute>
           )}
         </div>
       </div>

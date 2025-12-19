@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PawPrint, Loader2 } from "lucide-react";
 import { Login } from "../Features/Authentication/mutationFunction";
 import queryClient from "../Store/queryClient";
-
+import { GlobalContext } from "../Store/Context";
 import axios from "axios";
 
 // It only works for the variables defined with VITE as their starting point.
@@ -17,6 +17,8 @@ const BASE_URL = "import.meta.env.VITE_BASE_URL"
 console.log(BASE_URL);
 export default function SignIn() {
   const { register, handleSubmit } = useForm();
+
+  const { isLoggedInRef } = useContext(GlobalContext);
   const navigate = useNavigate();
   // logging in using react query
   const {isPending, mutate} = useMutation({
@@ -24,6 +26,8 @@ export default function SignIn() {
     onSuccess:async (data)=>{
         
         toast.success("Welcome back");
+        isLoggedInRef.current = true;
+        
         // We need to invalidate queries data because mutation does not udpate cached data.
        await queryClient.invalidateQueries(["userData"])
         navigate('/');
