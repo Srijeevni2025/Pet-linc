@@ -83,15 +83,15 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li className="hover:text-orange-400 transition">Dog Grooming</li>
             <li className="hover:text-orange-400 transition">Cat Grooming</li>
-            <li className="hover:text-orange-400 transition">Pet Spa at Home</li>
+            
           </ul>
         </div>
 
         {/* Contact */}
         <div>
           <h3 className="text-white font-semibold text-lg mb-4">Contact Us</h3>
-          <p className="text-sm text-gray-400">📧 support@petlinc.com</p>
-          <p className="text-sm text-gray-400 mt-1">📞 +91-93303 56062</p>
+          <p className="text-sm text-gray-400">📧 info@petlinc.in</p>
+          <p className="text-sm text-gray-400 mt-1">📞 +91-9674127485</p>
 
           <div className="flex gap-4 mt-5">
             {/* <a
