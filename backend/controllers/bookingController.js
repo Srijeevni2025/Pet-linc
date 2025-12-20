@@ -13,7 +13,7 @@ exports.createNewBooking = catchAsync(async(req, res, next)=>{
 
     const productId = req.body.productId;
     const bookingMarkedPrice = await Package.findById({_id:productId}).select('price');
-    const booking = await Booking.create({userId, productId, petName, petType, breed, age, weight, notes, address, date, timeSlot, addons, coupan, discount,bookingMarkedPrice: bookingMarkedPrice.price});
+    const booking = await Booking.create({userId, productId, petName, mobile, aggression, petType, breed, age, weight, notes, address, date, timeSlot, addons, coupan, discount,bookingMarkedPrice: bookingMarkedPrice.price});
 
     res.status(200).json({
         status:"success",
