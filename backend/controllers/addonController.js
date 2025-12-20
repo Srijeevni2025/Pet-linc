@@ -15,7 +15,7 @@ exports.createAddon = catchAsync(async(req, res, next)=>{
 exports.getAllAddons = catchAsync(async(req, res, next)=>{
     let addons = await AddOn.find();
     const coupans = await Coupans.find();
-    console.log(addons, coupans);
+    
     res.status(200).json({
         status:"success",
         data:addons,
