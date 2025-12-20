@@ -17,7 +17,7 @@ function HomePage(){
         
         {/* //whatsapp icon */}
       {!showBookingModal&&<a
-  href="https://wa.me/919876543210?text=Hi%20Petlinc%20%F0%9F%91%8B%20I%E2%80%99d%20like%20to%20book%20a%20grooming%20service%20for%20my%20pet.%20Please%20guide%20me.
+  href="https://wa.me/9674127485?text=Hi%20Petlinc%20%F0%9F%91%8B%20I%E2%80%99d%20like%20to%20book%20a%20grooming%20service%20for%20my%20pet.%20Please%20guide%20me.
 "
   target="_blank"
   rel="noopener noreferrer"

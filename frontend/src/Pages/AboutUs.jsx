@@ -170,8 +170,12 @@
 //   );
 // }
 
+import { useNavigate } from "react-router-dom";
 
 export default function AboutUs() {
+
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50/70 to-white pb-24">
       {/* HERO SECTION */}
@@ -200,7 +204,7 @@ export default function AboutUs() {
       <section className="max-w-6xl mx-auto px-6 mt-10 grid md:grid-cols-2 gap-12 items-center">
         <div className="relative">
           <img
-            src="/about-story.png"
+            src="/about-us.png"
             alt="Pet grooming journey"
             className="rounded-3xl shadow-2xl w-full"
           />
@@ -278,17 +282,17 @@ export default function AboutUs() {
       <section className="max-w-5xl mx-auto px-6 mt-28">
         <div className="bg-white p-10 rounded-3xl border shadow-lg">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
-            A Message From Our Founder
+            A Message From Our Founders
           </h2>
 
           <p className="text-gray-700 leading-relaxed text-lg mb-4">
             “Every pet teaches us something — trust, patience, joy, loyalty.
-            Petlinc is my way of giving something back.  
+            Petlinc is our way of giving something back.  
             Grooming shouldn’t be stressful. It should be a small celebration of
-            your pet’s happiness and wellbeing.”
+            our pet’s happiness and wellbeing.”
           </p>
 
-          <p className="text-gray-900 font-semibold text-lg">— Founder, Petlinc</p>
+          <p className="text-gray-900 font-semibold text-lg">— Founders, Petlinc</p>
         </div>
       </section>
 
@@ -327,7 +331,7 @@ export default function AboutUs() {
           Join thousands of pet parents choosing love-first grooming.
         </p>
 
-        <button className="mt-6 px-8 py-4 bg-orange-600 text-white font-semibold rounded-2xl shadow hover:bg-orange-700 transition">
+        <button onClick={()=>navigate('/#grooming-category')} className="mt-6 px-8 py-4 bg-orange-600 text-white font-semibold rounded-2xl shadow hover:bg-orange-700 transition">
           Book a Grooming Session
         </button>
       </section>

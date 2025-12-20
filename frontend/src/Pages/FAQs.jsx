@@ -112,7 +112,7 @@ export default function FAQs() {
           Our support team is here to help you 7 days a week.
         </p>
         <a
-          href="mailto:support@petlinc.in"
+          href="mailto:info@petlinc.in"
           className="inline-block mt-4 px-6 py-3 bg-orange-600 text-white rounded-xl shadow hover:bg-orange-700 transition"
         >
           Contact Support

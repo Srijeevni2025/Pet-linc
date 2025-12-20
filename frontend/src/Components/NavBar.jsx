@@ -173,14 +173,14 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-orange-100 shadow-md animate-slideDown px-5 py-4 space-y-4">
             {/* Search */}
-            <div className="flex items-center bg-gray-50 rounded-full px-3 py-2 border border-gray-200">
+            {/* <div className="flex items-center bg-gray-50 rounded-full px-3 py-2 border border-gray-200">
               <Search className="text-gray-500 mr-2" size={18} />
               <input
                 type="text"
                 placeholder="Search..."
                 className="bg-transparent flex-1 outline-none text-sm text-gray-700"
               />
-            </div>
+            </div> */}
 
             {/* Location */}
             <button
