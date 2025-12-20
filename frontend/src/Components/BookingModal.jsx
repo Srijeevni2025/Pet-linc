@@ -817,6 +817,7 @@ function validateStep2(form) {
                   <div>
                     <label className="text-sm font-semibold text-gray-600">Age</label>
                     <input
+                      type = "number"
                       value={form.age}
                       onChange={(e) => setForm({ ...form, age: e.target.value })}
                       className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
@@ -826,6 +827,7 @@ function validateStep2(form) {
                   <div>
                     <label className="text-sm font-semibold text-gray-600">Weight (kg)</label>
                     <input
+                      type = "number"
                       value={form.weight}
                       onChange={(e) => setForm({ ...form, weight: e.target.value })}
                       className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
@@ -867,9 +869,13 @@ function validateStep2(form) {
     <div>
       <label className="text-sm font-semibold text-gray-600">Contact Number</label>
       <input
-        type="number"
+        type="tel"
+        minLength="10"
+        maxLength="10"
+        pattern="[0-9]{10}"
         value={form.mobile}
         required
+        title= "Only digits are allowed."
         onChange={(e) => setForm({ ...form, mobile: e.target.value })}
         className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
       />

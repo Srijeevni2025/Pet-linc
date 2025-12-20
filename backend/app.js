@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser")
 const errorHandler = require("./controllers/errorController")
 
 
+
 // routers
 const userRouter = require("./routers/userRouter")
 const reviewRouter = require("./routers/reviewRouter")
@@ -15,6 +16,7 @@ const groomerRouter = require("./routers/GroomerRouter");
 const packageRouter = require("./routers/packageRouter");
 const bookingRouter = require('./routers/bookingRouter');
 const coupanRouter = require('./routers/coupanRouter');
+const authRouter = require("./routers/authRouter")
 
 // Applying middlewares
 app.set('view engine', ejs);
@@ -26,6 +28,8 @@ app.use(cors({
 }))
 app.use(cookieParser());
 
+
+
 // mounting api routes
 app.get("/health", (req, res) => {
   res.status(200).json({
@@ -33,7 +37,7 @@ app.get("/health", (req, res) => {
     time: new Date().toISOString(),
   });
 });
-
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/groomers", groomerRouter)

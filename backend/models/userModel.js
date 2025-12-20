@@ -16,9 +16,12 @@ const userSchema = new mongoose.Schema({
     }, 
     password:{
         type:String,
-        required:[true, "A password should be there."],
+        required:function(){
+            return this.authProvider === "local"
+        },
         minLength:6,
         maxLength:8,
+        
         
         
     }, 
@@ -36,13 +39,26 @@ const userSchema = new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
-    googleId:{
-        type:String
-    }
+     // 🔁 How user logged in
+  authProvider: {
+    type: String,
+    enum: ["local", "google"],
+    default: "local",
+  },
+
+  // 🆔 Google unique user ID
+  googleId: {
+    type: String,
+  },
+
     // passwordChangedAt:{
     //     type:Date,
     //     default:Date.now()
     // }
+     createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
 // encrypting  the password
@@ -60,6 +76,7 @@ userSchema.pre('save',  async function(next){
 
 // function to compare the recieved password while logging in and the saved encrypted password.
 userSchema.methods.checkPassword = async function(recievedPassword, savedPassword){
+    
     return await bcrypt.compare(recievedPassword, savedPassword);
 }
 const User = mongoose.model('User', userSchema);

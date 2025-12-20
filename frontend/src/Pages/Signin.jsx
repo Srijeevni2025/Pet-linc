@@ -10,6 +10,7 @@ import { Login } from "../Features/Authentication/mutationFunction";
 import queryClient from "../Store/queryClient";
 import { GlobalContext } from "../Store/Context";
 import axios from "axios";
+import GoogleLoginButton from "../ui/GoogleLogin";
 
 // It only works for the variables defined with VITE as their starting point.
 const BASE_URL = "import.meta.env.VITE_BASE_URL"
@@ -30,7 +31,7 @@ export default function SignIn() {
         
         // We need to invalidate queries data because mutation does not udpate cached data.
        await queryClient.invalidateQueries(["userData"])
-        navigate('/');
+        navigate('/', {replace:true});
 
     }
   })
@@ -62,6 +63,10 @@ export default function SignIn() {
     
     mutate({email:data.email, password: data.password});
   }
+
+        const googleLogin = () => {
+  window.location.href = "http://localhost:4000/api/v1/auth/google";
+};
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center relative bg-gradient-to-br from-orange-100 via-white to-orange-50 overflow-hidden">
@@ -173,19 +178,16 @@ export default function SignIn() {
           </div>
 
           {/* Social Login */}
-          <button
-            type="button"
-            className="w-full py-2 border border-gray-300 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-all text-gray-700 font-medium"
-          >
-            <img src="/google.svg" alt="Google" className="w-5 h-5" />
-            Continue with Google
-          </button>
+          
+    
+         
+
           {/* <GoogleLogin 
           onSuccess={handleGoogleLogin}
           onError={()=>console.log("google login failed")}
           />*/}
         </form> 
-
+            <GoogleLoginButton/>
         {/* Sign Up Link */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}

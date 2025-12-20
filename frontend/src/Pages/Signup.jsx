@@ -5,6 +5,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import queryClient from "../Store/queryClient";
+import GoogleLoginButton from "../ui/GoogleLogin";
 
 import { PawPrint, Loader2 } from "lucide-react";
 
@@ -20,7 +21,7 @@ export default function Signup() {
         method: "POST",
         url: `${BASE_URL}/api/v1/users/signup`,
         headers: { "Content-Type": "application/json" },
-        data: { name, email, password, passwordConfirm },
+        data: { name, email, password, passwordConfirm, authProvider:"local" },
         withCredentials: true,
       });
       return res.data;
@@ -170,15 +171,16 @@ export default function Signup() {
           </div>
 
           {/* Social Signup */}
-          <button
+          {/* <button
             type="button"
             className="w-full py-2 border border-gray-300 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-all text-gray-700 font-medium"
           >
             <img src="/google.svg" alt="Google" className="w-5 h-5" />
             Continue with Google
-          </button>
+          </button> */}
         </form>
 
+            <GoogleLoginButton/>
         {/* Sign In Redirect */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
