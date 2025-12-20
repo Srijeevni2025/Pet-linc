@@ -11,6 +11,8 @@ function HomePage(){
     return (
         // navbar
         <>
+        
+
         <Navbar/>
         <HomePageHeroSection/>
         <GroomingCategory id = "grooming-category"/>
