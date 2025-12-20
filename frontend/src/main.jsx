@@ -23,6 +23,7 @@ import BecomePartner from "./Components/BecomeGroomerForm";
 import AdminDashboard from "./Pages/AdminDashboard";
 import BookingDetails from "./Pages/BookingDetails";
 import { SpeedInsights } from "@vercel/speed-insights/react"
+import ProtectedRoute from "./Components/Protect";
 
 
 
@@ -48,7 +49,7 @@ root.render(//<React.StrictMode>
         <Route path = "/faq" element = {<FAQs/>}/>
         <Route path = "/support" element = {<SupportPage/>}/>
         <Route path = "/becomepartner" element = {<BecomePartner/>}/>
-        <Route path = "/admin-dashboard" element = {<AdminDashboard/>}/>
+        <Route path = "/admin-dashboard" element = {<ProtectedRoute><AdminDashboard/></ProtectedRoute>}/>
         <Route path = "/my-bookings/:id"  element = {<BookingDetails/>}/>
         
     </Routes>
