@@ -43,13 +43,13 @@ export default function SupportPage() {
               Speak to a real human — we love helping pet parents.
             </p>
             <p className="mt-2 font-semibold text-orange-600 text-lg">
-              +91 90000 00000
+              +91 9674127485
             </p>
           </div>
         </div>
 
         {/* WHATSAPP SUPPORT */}
-        <div className="bg-white p-8 rounded-3xl border shadow hover:shadow-lg transition flex items-start gap-5">
+        {/* <div className="bg-white p-8 rounded-3xl border shadow hover:shadow-lg transition flex items-start gap-5">
           <div className="bg-green-100 p-4 rounded-2xl">
             <MessageCircle className="w-6 h-6 text-green-600" />
           </div>
@@ -59,10 +59,10 @@ export default function SupportPage() {
               Fast replies for quick questions, bookings, and updates.
             </p>
             <p className="mt-2 font-semibold text-green-600 text-lg">
-              +91 90000 00000
+              +91 9674127485
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* EMAIL SUPPORT */}
         <div className="bg-white p-8 rounded-3xl border shadow hover:shadow-lg transition flex items-start gap-5">
@@ -75,13 +75,13 @@ export default function SupportPage() {
               For detailed queries, feedback, or attachments.
             </p>
             <p className="mt-2 font-semibold text-blue-600 text-lg">
-              support@petlinc.in
+              info@petlinc.in
             </p>
           </div>
         </div>
 
         {/* EMERGENCY CARE */}
-        <div className="bg-white p-8 rounded-3xl border shadow hover:shadow-lg transition flex items-start gap-5">
+        {/* <div className="bg-white p-8 rounded-3xl border shadow hover:shadow-lg transition flex items-start gap-5">
           <div className="bg-red-100 p-4 rounded-2xl">
             <AlertTriangle className="w-6 h-6 text-red-600" />
           </div>
@@ -94,7 +94,7 @@ export default function SupportPage() {
               +91 91111 22222
             </p>
           </div>
-        </div>
+        </div> */}
       </section>
 
       {/* QUICK LINKS */}

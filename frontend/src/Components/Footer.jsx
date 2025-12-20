@@ -90,7 +90,14 @@ export default function Footer() {
         {/* Contact */}
         <div>
           <h3 className="text-white font-semibold text-lg mb-4">Contact Us</h3>
-          <p className="text-sm text-gray-400">📧 info@petlinc.in</p>
+          <p className="text-sm text-gray-400"><a
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=info@petlinc.in"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-orange-600 font-semibold hover:underline"
+>
+  📧 info@petlinc.in
+</a></p>
           <p className="text-sm text-gray-400 mt-1">📞 <a href = "tel:+91-9674127485" className="footer-phone">+91 9674127485</a></p>
 
           <div className="flex gap-4 mt-5">

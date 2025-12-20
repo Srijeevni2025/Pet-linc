@@ -137,19 +137,22 @@ export default function BecomePartner() {
         </h2>
 
         <div className="bg-white p-10 rounded-3xl border shadow-lg space-y-6">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 ">
             <input
               type="text"
               placeholder="Full Name"
-              className="form-input"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition"
+
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
+              
             />
 
             <input
               type="text"
               placeholder="Phone Number"
-              className="form-input"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition"
+
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
@@ -157,7 +160,8 @@ export default function BecomePartner() {
             <input
               type="text"
               placeholder="City"
-              className="form-input"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition"
+
               value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
             />
@@ -165,7 +169,8 @@ export default function BecomePartner() {
             <input
               type="text"
               placeholder="Years of Experience"
-              className="form-input"
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition"
+
               value={form.experience}
               onChange={(e) =>
                 setForm({ ...form, experience: e.target.value })
@@ -176,7 +181,8 @@ export default function BecomePartner() {
           <textarea
             placeholder="What grooming services do you offer?"
             rows={4}
-            className="form-input"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition"
+
             value={form.services}
             onChange={(e) => setForm({ ...form, services: e.target.value })}
           ></textarea>
@@ -184,7 +190,8 @@ export default function BecomePartner() {
           <textarea
             placeholder="Tell us a little about yourself…"
             rows={4}
-            className="form-input"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition"
+
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
           ></textarea>
