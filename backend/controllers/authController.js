@@ -19,7 +19,7 @@ const verifyToken = (token)=>{
 
 
 exports.signup = catchAsync(async(req, res, next)=>{
-    const {name, email, password, passwordConfirm} = req.body;
+    const {name, email, password, passwordConfirm, authProvider} = req.body;
     
 
     // Check if the user with given email already exists
@@ -29,7 +29,7 @@ exports.signup = catchAsync(async(req, res, next)=>{
     }
 
     // creating new user
-    const newUser = await User.create({name, email, password, passwordConfirm});
+    const newUser = await User.create({name, email, password, passwordConfirm, authProvider});
     console.log(newUser);
     if(!newUser){
         return next(new appError(404, "Something went wrong. Could not sign up."))
@@ -69,12 +69,14 @@ exports.login = catchAsync(async(req, res, next)=>{
     }
 
     const user = await User.findOne({email:email});
+    
     if(!user){
         return next(new appError(404, "User does not exists with the given email id"));
     }
     
     // checking if the recieved password is correct for the recieved email address.
     const correct = await user.checkPassword(password, user.password);
+    
     if(!correct){
         return next(new appError(404, "Please provide correct email and password!"));
     }
@@ -103,46 +105,7 @@ exports.login = catchAsync(async(req, res, next)=>{
 
 
 // google login
-exports.googleLogin = catchAsync(async (req, res, next) => {
 
-    const { email, name, googleId, avatar } = req.body;
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      user = await User.create({
-        name,
-        email,
-        googleId,
-        avatar,
-        password: "GOOGLE_AUTH", // dummy
-      });
-    }
-
-    const accessToken = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    const refreshToken = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    );
-
-    res.status(200).json({
-      status: "success",
-      accessToken,
-      refreshToken,
-      user: {
-        id: user._id,
-        name: user.name,
-        avatar: user.avatar,
-        email: user.email,
-      },
-    });
-  } 
-);
 
 // protecting route
 
@@ -151,7 +114,7 @@ exports.protect = catchAsync(async(req, res, next)=>{
     if(!token){
         return next(new appError(401, "You are not logged in! Please login."))
     }
-    console.log(token)
+    
     // verifying the recieved token
     const decoded = await util.promisify(jwt.verify)(token, process.env.JWT_SECRET)
    
@@ -163,7 +126,7 @@ exports.protect = catchAsync(async(req, res, next)=>{
     
     // checking if the password was changed after the token was generated. 
     // ************* implement it later *********************
-
+    
     req.user = user;
     next();
 })
@@ -193,3 +156,7 @@ exports.getAllUsers = catchAsync(async(req, res, next)=>{
         data:users
     })
 })
+
+
+// google Oauth implementations
+

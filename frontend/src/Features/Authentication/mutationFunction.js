@@ -19,7 +19,7 @@ export async function Login({email, password}){
         },
         withCredentials:true
     });
-    
+    console.log(res.data)
     return res.data;
 }
 
@@ -33,4 +33,19 @@ export async function Logout(){
         withCredentials:true
     })
     return res.data
+}
+
+export async function GoogleLogin(token){
+    const res = await axios({
+        method:'post',
+        url:`${API_URL_BASE}/api/v1/auth/google`,
+        headers:{
+            "Content-Type":"application/json"
+        },
+        data:{
+            token:token
+        },
+        withCredentials:true
+
+    })
 }

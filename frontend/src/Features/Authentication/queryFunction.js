@@ -12,6 +12,6 @@ export async function GetLoggedInUser(){
        
         
     })
-    
+    console.log(res.data)
     return res.data;
 }

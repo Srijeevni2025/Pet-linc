@@ -299,7 +299,7 @@ export default function BookingDetails() {
               </div>
             </div>
 
-            <span
+            {/* <span
               className={`px-4 py-1.5 text-xs font-semibold rounded-full ${
                 booking.status === "completed"
                   ? "bg-green-100 text-green-700"
@@ -309,7 +309,7 @@ export default function BookingDetails() {
               }`}
             >
               {booking.status?.toUpperCase()}
-            </span>
+            </span> */}
           </div>
         </div>
 

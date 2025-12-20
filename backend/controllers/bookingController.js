@@ -6,7 +6,7 @@ const Booking = require('./../models/bookingModel')
 
 
 exports.createNewBooking = catchAsync(async(req, res, next)=>{
-    const {petName, type:petType, breed, age, weight, notes, address, date, timeSlot, addons, coupan, couponId, discount, } = req.body;
+    const {petName, type:petType, breed, age, weight, notes, address, date, timeSlot, addons, coupan, couponId, discount, mobile, aggression } = req.body;
     
     
     const userId = req.user._id;
@@ -40,3 +40,4 @@ exports.getAllBookingsForDashboard = catchAsync(async(req, res, next)=>{
         data:bookings
     })
 })
+
