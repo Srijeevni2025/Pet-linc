@@ -49,7 +49,7 @@ root.render(//<React.StrictMode>
         <Route path = "/faq" element = {<FAQs/>}/>
         <Route path = "/support" element = {<SupportPage/>}/>
         <Route path = "/becomepartner" element = {<BecomePartner/>}/>
-        <Route path = "/admin-dashboard" element = {<ProtectedRoute><AdminDashboard/></ProtectedRoute>}/>
+        <Route path = "/admin-dashboard" element = {<AdminDashboard/>}/>
         <Route path = "/my-bookings/:id"  element = {<BookingDetails/>}/>
         
     </Routes>
