@@ -714,16 +714,319 @@
 // }
 
 
+// import { useState, useMemo } from "react";
+// import { useQuery, useMutation } from "@tanstack/react-query";
+// import axios from "axios";
+// import {
+//   CalendarDays,
+//   CheckCircle2,
+//   XCircle,
+//   Clock,
+//   Search,
+//   Copy,
+// } from "lucide-react";
+
+// const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+// const PAGE_SIZE = 8;
+
+// export default function AdminDashboard() {
+//   const [selectedBooking, setSelectedBooking] = useState(null);
+//   const [search, setSearch] = useState("");
+//   const [statusFilter, setStatusFilter] = useState("all");
+//   const [page, setPage] = useState(1);
+
+//   const { data, isLoading, isError } = useQuery({
+//     queryKey: ["adminBookings"],
+//     queryFn: async () => {
+//       const res = await axios.get(
+//         `${API_BASE_URL}/api/v1/bookings/get-all-bookings-for-dashboard`,
+//         { withCredentials: true }
+//       );
+//       return res.data;
+//     },
+//   });
+
+//   const bookings = data?.data || [];
+
+//   const safeStatus = (b) => b.status || "pending";
+
+//   /* ---------------- FILTER + SEARCH ---------------- */
+//   const filteredBookings = useMemo(() => {
+//     return bookings.filter((b) => {
+//       const text =
+//         `${b.userId?.name} ${b.userId?.email} ${b.petName} ${b.productId?.name} ${b._id}`.toLowerCase();
+
+//       const matchesSearch = text.includes(search.toLowerCase());
+//       const matchesStatus =
+//         statusFilter === "all" || safeStatus(b) === statusFilter;
+
+//       return matchesSearch && matchesStatus;
+//     });
+//   }, [bookings, search, statusFilter]);
+
+//   /* ---------------- PAGINATION ---------------- */
+//   const totalPages = Math.ceil(filteredBookings.length / PAGE_SIZE);
+//   const paginated = filteredBookings.slice(
+//     (page - 1) * PAGE_SIZE,
+//     page * PAGE_SIZE
+//   );
+
+//   /* ---------------- SUMMARY ---------------- */
+//   const summary = {
+//     total: bookings.length,
+//     pending: bookings.filter((b) => safeStatus(b) === "pending").length,
+//     completed: bookings.filter((b) => safeStatus(b) === "completed").length,
+//     cancelled: bookings.filter((b) => safeStatus(b) === "cancelled").length,
+//   };
+
+//   if (isLoading)
+//     return <Skeleton />;
+
+//   if (isError)
+//     return (
+//       <div className="text-center text-red-500 py-20">
+//         Failed to load dashboard.
+//       </div>
+//     );
+
+//   return (
+//     <div className="min-h-screen bg-[#0D1117] text-white p-6 max-w-7xl mx-auto">
+//       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+
+//       {/* SUMMARY */}
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+//         <SummaryCard title="Total" value={summary.total} icon={<CalendarDays />} />
+//         <SummaryCard title="Pending" value={summary.pending} icon={<Clock />} />
+//         <SummaryCard title="Completed" value={summary.completed} icon={<CheckCircle2 />} />
+//         <SummaryCard title="Cancelled" value={summary.cancelled} icon={<XCircle />} />
+//       </div>
+
+//       {/* FILTER BAR */}
+//       <div className="flex flex-col md:flex-row gap-4 mb-6">
+//         <div className="relative flex-1">
+//           <Search className="absolute left-3 top-3 text-gray-500" size={18} />
+//           <input
+//             value={search}
+//             onChange={(e) => setSearch(e.target.value)}
+//             placeholder="Search booking, user, pet, package…"
+//             className="w-full bg-[#0B1220] border border-gray-800 rounded-xl pl-10 pr-4 py-2 outline-none focus:border-orange-500"
+//           />
+//         </div>
+
+//         <select
+//           value={statusFilter}
+//           onChange={(e) => setStatusFilter(e.target.value)}
+//           className="bg-[#0B1220] border border-gray-800 rounded-xl px-4 py-2"
+//         >
+//           <option value="all">All Status</option>
+//           <option value="pending">Pending</option>
+//           <option value="completed">Completed</option>
+//           <option value="cancelled">Cancelled</option>
+//         </select>
+//       </div>
+
+//       {/* TABLE */}
+//       <div className="bg-[#0B1220] border border-gray-800 rounded-xl p-4">
+//         <div className="overflow-x-auto">
+//           <table className="w-full border-separate border-spacing-y-3">
+//             <thead className="sticky top-0 bg-[#0B1220] z-10">
+//               <tr className="text-gray-400 text-sm">
+//                 <th className="text-left px-3">Customer</th>
+//                 <th className="text-left px-3">Pet</th>
+//                 <th className="text-left px-3">Package</th>
+//                 <th className="text-left px-3">Date</th>
+//                 <th className="text-left px-3">Status</th>
+//                 <th className="text-right px-3">Actions</th>
+//               </tr>
+//             </thead>
+
+//             <tbody>
+//               {paginated.length === 0 ? (
+//                 <tr>
+//                   <td colSpan={6} className="text-center py-10 text-gray-500">
+//                     No bookings found.
+//                   </td>
+//                 </tr>
+//               ) : (
+//                 paginated.map((b) => (
+//                   <tr
+//                     key={b._id}
+//                     onClick={() => setSelectedBooking(b)}
+//                     className="bg-[#111827] hover:bg-[#1a2332] transition cursor-pointer"
+//                   >
+//                     <td className="px-3 py-3 text-sm">
+//                       <div className="font-medium">{b.userId?.name}</div>
+//                       <div className="text-xs text-gray-500">
+//                         {b.userId?.email}
+//                       </div>
+//                     </td>
+
+//                     <td className="px-3 py-3 text-sm">
+//                       {b.petName} ({b.petType})
+//                     </td>
+
+//                     <td className="px-3 py-3 text-sm">
+//                       {b.productId?.name}
+//                     </td>
+
+//                     <td className="px-3 py-3 text-sm">
+//                       {new Date(b.date).toDateString()}
+//                     </td>
+
+//                     <td className="px-3 py-3">
+//                       <StatusBadge status={safeStatus(b)} />
+//                     </td>
+
+//                     <td className="px-3 py-3 text-right">
+//                       <button
+//                         onClick={(e) => {
+//                           e.stopPropagation();
+//                           navigator.clipboard.writeText(b._id);
+//                         }}
+//                         className="text-gray-400 hover:text-white"
+//                       >
+//                         <Copy size={16} />
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 ))
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+
+//         {/* PAGINATION */}
+//         {totalPages > 1 && (
+//           <div className="flex justify-between items-center mt-4 text-sm">
+//             <span className="text-gray-500">
+//               Page {page} of {totalPages}
+//             </span>
+
+//             <div className="flex gap-2">
+//               <button
+//                 disabled={page === 1}
+//                 onClick={() => setPage((p) => p - 1)}
+//                 className="px-3 py-1 border border-gray-700 rounded disabled:opacity-30"
+//               >
+//                 Prev
+//               </button>
+//               <button
+//                 disabled={page === totalPages}
+//                 onClick={() => setPage((p) => p + 1)}
+//                 className="px-3 py-1 border border-gray-700 rounded disabled:opacity-30"
+//               >
+//                 Next
+//               </button>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* MODAL */}
+//       {selectedBooking && (
+//         <BookingDetailsModal
+//           booking={selectedBooking}
+//           onClose={() => setSelectedBooking(null)}
+//         />
+//       )}
+//     </div>
+//   );
+// }
+
+// /* ---------------- COMPONENTS ---------------- */
+
+// function SummaryCard({ title, value, icon }) {
+//   return (
+//     <div className="bg-[#0B1220] border border-gray-800 p-5 rounded-xl">
+//       <div className="flex justify-between items-center">
+//         <div>
+//           <p className="text-gray-400 text-sm">{title}</p>
+//           <h3 className="text-2xl font-bold">{value}</h3>
+//         </div>
+//         <div className="text-orange-400">{icon}</div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// function StatusBadge({ status }) {
+//   const map = {
+//     pending: "bg-yellow-500/20 text-yellow-400",
+//     completed: "bg-green-500/20 text-green-400",
+//     cancelled: "bg-red-500/20 text-red-400",
+//   };
+
+//   return (
+//     <span className={`px-3 py-1 rounded-full text-xs ${map[status]}`}>
+//       {status.toUpperCase()}
+//     </span>
+//   );
+// }
+
+// /* ---------------- MODAL ---------------- */
+
+// function BookingDetailsModal({ booking, onClose }) {
+//   return (
+//     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+//       <div className="bg-[#0B1220] border border-gray-800 rounded-2xl max-w-3xl w-full p-6 overflow-y-auto max-h-[90vh]">
+//         <div className="flex justify-between mb-4">
+//           <h2 className="text-xl font-bold">Booking Details</h2>
+//           <button onClick={onClose}>✕</button>
+//         </div>
+
+//         <div className="grid md:grid-cols-2 gap-4 text-sm">
+//           <Detail title="Customer" value={booking.userId?.name} />
+//           <Detail title="Email" value={booking.userId?.email} />
+//           <Detail title="Phone" value={booking.userId?.phone} />
+//           <Detail title="Pet" value={`${booking.petName} (${booking.petType})`} />
+//           <Detail title="Breed" value={booking.breed} />
+//           <Detail title="Package" value={booking.productId?.name} />
+//           <Detail title="Date" value={new Date(booking.date).toDateString()} />
+//           <Detail title="Slot" value={booking.timeSlot} />
+//           <Detail title="Status" value={booking.status || "pending"} />
+//           <Detail title="Address" value={booking.address} full />
+//           <Detail title="Booking ID" value={booking._id} full />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// function Detail({ title, value, full }) {
+//   return (
+//     <div className={full ? "md:col-span-2" : ""}>
+//       <p className="text-gray-400">{title}</p>
+//       <p className="text-gray-200 break-words">{value || "—"}</p>
+//     </div>
+//   );
+// }
+
+// function Skeleton() {
+//   return (
+//     <div className="min-h-screen bg-[#0D1117] p-6 animate-pulse">
+//       <div className="h-8 w-48 bg-gray-800 rounded mb-6" />
+//       <div className="grid grid-cols-4 gap-6 mb-10">
+//         {[...Array(4)].map((_, i) => (
+//           <div key={i} className="h-24 bg-gray-800 rounded-xl" />
+//         ))}
+//       </div>
+//       <div className="h-64 bg-gray-800 rounded-xl" />
+//     </div>
+//   );
+// }
+
+
 import { useState, useMemo } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {
-  CalendarDays,
-  CheckCircle2,
-  XCircle,
-  Clock,
   Search,
   Copy,
+  PawPrint,
+  Phone,
+  Mail,
+  MapPin,
+  BadgePercent,
 } from "lucide-react";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -732,7 +1035,6 @@ const PAGE_SIZE = 8;
 export default function AdminDashboard() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isError } = useQuery({
@@ -748,92 +1050,71 @@ export default function AdminDashboard() {
 
   const bookings = data?.data || [];
 
-  const safeStatus = (b) => b.status || "pending";
+  /* ---------- DERIVED STATUS (NO STATUS FIELD IN DB) ---------- */
+  const deriveStatus = (b) => {
+    if (!b.date) return "pending";
+    const today = new Date();
+    const bookingDate = new Date(b.date);
+    if (bookingDate < today) return "completed";
+    return "upcoming";
+  };
 
-  /* ---------------- FILTER + SEARCH ---------------- */
-  const filteredBookings = useMemo(() => {
+  /* ---------- SEARCH ---------- */
+  const filtered = useMemo(() => {
     return bookings.filter((b) => {
-      const text =
-        `${b.userId?.name} ${b.userId?.email} ${b.petName} ${b.productId?.name} ${b._id}`.toLowerCase();
-
-      const matchesSearch = text.includes(search.toLowerCase());
-      const matchesStatus =
-        statusFilter === "all" || safeStatus(b) === statusFilter;
-
-      return matchesSearch && matchesStatus;
+      const blob = `
+        ${b.petName}
+        ${b.petType}
+        ${b.breed}
+        ${b.userId?.name}
+        ${b.userId?.email}
+        ${b.userId?.phone}
+        ${b.mobile}
+        ${b._id}
+      `.toLowerCase();
+      return blob.includes(search.toLowerCase());
     });
-  }, [bookings, search, statusFilter]);
+  }, [bookings, search]);
 
-  /* ---------------- PAGINATION ---------------- */
-  const totalPages = Math.ceil(filteredBookings.length / PAGE_SIZE);
-  const paginated = filteredBookings.slice(
+  /* ---------- PAGINATION ---------- */
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paginated = filtered.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE
   );
 
-  /* ---------------- SUMMARY ---------------- */
-  const summary = {
-    total: bookings.length,
-    pending: bookings.filter((b) => safeStatus(b) === "pending").length,
-    completed: bookings.filter((b) => safeStatus(b) === "completed").length,
-    cancelled: bookings.filter((b) => safeStatus(b) === "cancelled").length,
-  };
-
-  if (isLoading)
-    return <Skeleton />;
+  if (isLoading) return <Loading />;
 
   if (isError)
     return (
       <div className="text-center text-red-500 py-20">
-        Failed to load dashboard.
+        Failed to load admin dashboard.
       </div>
     );
 
   return (
     <div className="min-h-screen bg-[#0D1117] text-white p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6">Admin Bookings Dashboard</h1>
 
-      {/* SUMMARY */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <SummaryCard title="Total" value={summary.total} icon={<CalendarDays />} />
-        <SummaryCard title="Pending" value={summary.pending} icon={<Clock />} />
-        <SummaryCard title="Completed" value={summary.completed} icon={<CheckCircle2 />} />
-        <SummaryCard title="Cancelled" value={summary.cancelled} icon={<XCircle />} />
-      </div>
-
-      {/* FILTER BAR */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 text-gray-500" size={18} />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search booking, user, pet, package…"
-            className="w-full bg-[#0B1220] border border-gray-800 rounded-xl pl-10 pr-4 py-2 outline-none focus:border-orange-500"
-          />
-        </div>
-
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="bg-[#0B1220] border border-gray-800 rounded-xl px-4 py-2"
-        >
-          <option value="all">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
+      {/* SEARCH */}
+      <div className="relative mb-6">
+        <Search className="absolute left-4 top-3 text-gray-500" size={18} />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by pet, customer, phone, booking ID…"
+          className="w-full bg-[#0B1220] border border-gray-800 rounded-xl pl-11 pr-4 py-3 outline-none focus:border-orange-500"
+        />
       </div>
 
       {/* TABLE */}
       <div className="bg-[#0B1220] border border-gray-800 rounded-xl p-4">
         <div className="overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-3">
-            <thead className="sticky top-0 bg-[#0B1220] z-10">
-              <tr className="text-gray-400 text-sm">
-                <th className="text-left px-3">Customer</th>
+            <thead className="text-gray-400 text-sm">
+              <tr>
                 <th className="text-left px-3">Pet</th>
-                <th className="text-left px-3">Package</th>
+                <th className="text-left px-3">Customer</th>
                 <th className="text-left px-3">Date</th>
                 <th className="text-left px-3">Status</th>
                 <th className="text-right px-3">Actions</th>
@@ -843,7 +1124,7 @@ export default function AdminDashboard() {
             <tbody>
               {paginated.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-10 text-gray-500">
+                  <td colSpan={5} className="text-center py-10 text-gray-500">
                     No bookings found.
                   </td>
                 </tr>
@@ -852,31 +1133,40 @@ export default function AdminDashboard() {
                   <tr
                     key={b._id}
                     onClick={() => setSelectedBooking(b)}
-                    className="bg-[#111827] hover:bg-[#1a2332] transition cursor-pointer"
+                    className="bg-[#111827] hover:bg-[#1a2332] cursor-pointer transition"
                   >
+                    {/* PET */}
                     <td className="px-3 py-3 text-sm">
-                      <div className="font-medium">{b.userId?.name}</div>
+                      <div className="flex items-center gap-1 font-medium">
+                        <PawPrint size={14} /> {b.petName}
+                      </div>
                       <div className="text-xs text-gray-500">
-                        {b.userId?.email}
+                        {b.petType} • {b.breed}
                       </div>
                     </td>
 
+                    {/* CUSTOMER */}
                     <td className="px-3 py-3 text-sm">
-                      {b.petName} ({b.petType})
+                      <div>{b.userId?.name}</div>
+                      <div className="text-xs text-gray-500">
+                        {b.userId?.phone || b.mobile}
+                      </div>
                     </td>
 
+                    {/* DATE */}
                     <td className="px-3 py-3 text-sm">
-                      {b.productId?.name}
+                      {b.date ? new Date(b.date).toDateString() : "—"}
+                      <div className="text-xs text-gray-500">
+                        {b.timeSlot}
+                      </div>
                     </td>
 
-                    <td className="px-3 py-3 text-sm">
-                      {new Date(b.date).toDateString()}
-                    </td>
-
+                    {/* STATUS */}
                     <td className="px-3 py-3">
-                      <StatusBadge status={safeStatus(b)} />
+                      <StatusBadge status={deriveStatus(b)} />
                     </td>
 
+                    {/* ACTION */}
                     <td className="px-3 py-3 text-right">
                       <button
                         onClick={(e) => {
@@ -884,6 +1174,7 @@ export default function AdminDashboard() {
                           navigator.clipboard.writeText(b._id);
                         }}
                         className="text-gray-400 hover:text-white"
+                        title="Copy Booking ID"
                       >
                         <Copy size={16} />
                       </button>
@@ -901,7 +1192,6 @@ export default function AdminDashboard() {
             <span className="text-gray-500">
               Page {page} of {totalPages}
             </span>
-
             <div className="flex gap-2">
               <button
                 disabled={page === 1}
@@ -933,27 +1223,12 @@ export default function AdminDashboard() {
   );
 }
 
-/* ---------------- COMPONENTS ---------------- */
-
-function SummaryCard({ title, value, icon }) {
-  return (
-    <div className="bg-[#0B1220] border border-gray-800 p-5 rounded-xl">
-      <div className="flex justify-between items-center">
-        <div>
-          <p className="text-gray-400 text-sm">{title}</p>
-          <h3 className="text-2xl font-bold">{value}</h3>
-        </div>
-        <div className="text-orange-400">{icon}</div>
-      </div>
-    </div>
-  );
-}
-
+/* ---------------- STATUS ---------------- */
 function StatusBadge({ status }) {
   const map = {
     pending: "bg-yellow-500/20 text-yellow-400",
+    upcoming: "bg-blue-500/20 text-blue-400",
     completed: "bg-green-500/20 text-green-400",
-    cancelled: "bg-red-500/20 text-red-400",
   };
 
   return (
@@ -964,52 +1239,99 @@ function StatusBadge({ status }) {
 }
 
 /* ---------------- MODAL ---------------- */
-
 function BookingDetailsModal({ booking, onClose }) {
+  const marked = Number(booking.bookingMarkedPrice || 0);
+  const discount = Number(booking.discount || 0);
+  const finalPrice = marked - discount;
+
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-      <div className="bg-[#0B1220] border border-gray-800 rounded-2xl max-w-3xl w-full p-6 overflow-y-auto max-h-[90vh]">
-        <div className="flex justify-between mb-4">
+      <div className="bg-[#0B1220] border border-gray-800 rounded-2xl max-w-4xl w-full p-6 overflow-y-auto max-h-[90vh]">
+        <div className="flex justify-between mb-6">
           <h2 className="text-xl font-bold">Booking Details</h2>
           <button onClick={onClose}>✕</button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 text-sm">
-          <Detail title="Customer" value={booking.userId?.name} />
-          <Detail title="Email" value={booking.userId?.email} />
-          <Detail title="Phone" value={booking.userId?.phone} />
-          <Detail title="Pet" value={`${booking.petName} (${booking.petType})`} />
-          <Detail title="Breed" value={booking.breed} />
-          <Detail title="Package" value={booking.productId?.name} />
-          <Detail title="Date" value={new Date(booking.date).toDateString()} />
-          <Detail title="Slot" value={booking.timeSlot} />
-          <Detail title="Status" value={booking.status || "pending"} />
-          <Detail title="Address" value={booking.address} full />
-          <Detail title="Booking ID" value={booking._id} full />
+        <div className="grid md:grid-cols-2 gap-6 text-sm">
+          {/* CUSTOMER */}
+          <Section title="Customer">
+            <Detail icon={<Mail size={14} />} value={booking.userId?.email} />
+            <Detail icon={<Phone size={14} />} value={booking.userId?.phone || booking.mobile} />
+          </Section>
+
+          {/* PET */}
+          <Section title="Pet">
+            <Detail value={`${booking.petName} (${booking.petType})`} />
+            <Detail value={`Breed: ${booking.breed}`} />
+            <Detail value={`Age: ${booking.age}`} />
+            <Detail value={`Weight: ${booking.weight}`} />
+            <Detail value={`Aggression: ${booking.aggression || "No"}`} />
+          </Section>
+
+          {/* BOOKING */}
+          <Section title="Booking">
+            <Detail value={new Date(booking.date).toDateString()} />
+            <Detail value={booking.timeSlot} />
+            <Detail icon={<MapPin size={14} />} value={booking.address} />
+          </Section>
+
+          {/* PRICING */}
+          <Section title="Pricing">
+            <Detail icon={<BadgePercent size={14} />} value={`MRP: ₹${marked}`} />
+            <Detail value={`Discount: ₹${discount}`} />
+            <Detail value={`Final: ₹${finalPrice}`} />
+            <Detail value={`Coupon: ${booking.coupan || "—"}`} />
+          </Section>
+
+          {/* ADDONS */}
+          <Section title="Add-ons" full>
+            {booking.addons?.length ? (
+              booking.addons.map((a) => (
+                <Detail key={a._id} value={`${a.name} — ₹${a.price}`} />
+              ))
+            ) : (
+              <p className="text-gray-400">No add-ons</p>
+            )}
+          </Section>
+
+          {/* NOTES */}
+          {booking.notes && (
+            <Section title="Notes" full>
+              <p className="text-gray-300">{booking.notes}</p>
+            </Section>
+          )}
+
+          <Section title="Meta" full>
+            <Detail value={`Booking ID: ${booking._id}`} />
+          </Section>
         </div>
       </div>
     </div>
   );
 }
 
-function Detail({ title, value, full }) {
+function Section({ title, children, full }) {
   return (
     <div className={full ? "md:col-span-2" : ""}>
-      <p className="text-gray-400">{title}</p>
-      <p className="text-gray-200 break-words">{value || "—"}</p>
+      <h3 className="text-gray-400 mb-2">{title}</h3>
+      <div className="space-y-2">{children}</div>
     </div>
   );
 }
 
-function Skeleton() {
+function Detail({ value, icon }) {
+  return (
+    <div className="flex items-center gap-2 text-gray-200">
+      {icon}
+      <span>{value || "—"}</span>
+    </div>
+  );
+}
+
+function Loading() {
   return (
     <div className="min-h-screen bg-[#0D1117] p-6 animate-pulse">
       <div className="h-8 w-48 bg-gray-800 rounded mb-6" />
-      <div className="grid grid-cols-4 gap-6 mb-10">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-24 bg-gray-800 rounded-xl" />
-        ))}
-      </div>
       <div className="h-64 bg-gray-800 rounded-xl" />
     </div>
   );
