@@ -5,6 +5,11 @@ const { default: isEmail } = require("validator/lib/isEmail");
 
 const userSchema = new mongoose.Schema({
     name:String,
+    role:{
+        type:String,
+        enum:['user', 'partner', 'admin'],
+        default:'user'
+    },
     email: {
         type: String,
         required: [true, 'Email id should be there.'],

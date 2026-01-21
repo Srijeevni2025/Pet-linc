@@ -41,6 +41,18 @@ exports.signup = catchAsync(async(req, res, next)=>{
     const emailObj = new Email({partnerName:newUser.name, to:"rajan@gmail.com"});
     
     // attaching cookie with response
+
+    if(process.env.ENV === 'development'){
+        console.log("Now in development mode")
+        res.cookie('jwt', token, {
+        expires: new Date(Date.now() + 60*60*1000),
+        secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
+        httpOnly:true,
+        sameSite:'None',
+        //domain:".petlinc.in"
+    })
+    }
+    if(process.env.ENV === 'production'){
     res.cookie('jwt', token, {
         expires: new Date(Date.now() + 60*60*1000),
         secure:true,
@@ -49,6 +61,7 @@ exports.signup = catchAsync(async(req, res, next)=>{
         sameSite:"none",
         domain:".petlinc.in"
     })
+}
     res.status(200).json({
         status:"success",
         data:{
@@ -83,6 +96,17 @@ exports.login = catchAsync(async(req, res, next)=>{
     const token = signToken(user._id);
     
     //creating cookies
+    if(process.env.ENV === 'development'){
+         console.log("Now in development mode")
+        res.cookie('jwt', token, {
+        expires: new Date(Date.now() + 60*60*1000),
+        secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
+        httpOnly:true,
+        sameSite:'None',
+        //domain:".petlinc.in"
+    })
+    }
+    if(process.env.ENV === 'production'){
     res.cookie('jwt', token, {
         expires: new Date(Date.now() + 60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
@@ -90,6 +114,7 @@ exports.login = catchAsync(async(req, res, next)=>{
         sameSite:'None',
         domain:".petlinc.in"
     })
+}
 
     
 
@@ -98,6 +123,7 @@ exports.login = catchAsync(async(req, res, next)=>{
         user:{
             name:user.name,
             email:user.email,
+            role:user.role
         }
     })
 })
@@ -135,6 +161,15 @@ exports.protect = catchAsync(async(req, res, next)=>{
 // logging out user
 
 exports.logout = catchAsync(async(req, res, next)=>{
+    if(process.env.ENV === 'development'){
+        res.clearCookie('jwt', {
+            httpOnly: true,
+            secure: true,
+            sameSite:"None"
+        })
+    }
+
+    if(process.env.ENV === 'production'){
     res.clearCookie('jwt', {
         httpOnly: true,
         secure: true,
@@ -142,6 +177,7 @@ exports.logout = catchAsync(async(req, res, next)=>{
         path:'/',
         domain:".petlinc.in"
     });
+}
     res.status(200).json({
         status:"success",
         message:"Logged out successfully."
@@ -158,5 +194,18 @@ exports.getAllUsers = catchAsync(async(req, res, next)=>{
 })
 
 
+
+
 // google Oauth implementations
 
+// implimenting role based access
+
+exports.restrictTo= (...roles)=>{
+    return catchAsync(async(req, res, next)=>{
+        const role = req.user.role;
+        if(!roles.includes(role)){
+            return next(new appError(404, "You are not authorized."));
+        }
+        next();
+    }
+)}
