@@ -25,14 +25,18 @@ export default function SignIn() {
   const {isPending, mutate} = useMutation({
     mutationFn:Login,
     onSuccess:async (data)=>{
-        
+        console.log("data", data.user.role)
         toast.success("Welcome back");
         isLoggedInRef.current = true;
         
         // We need to invalidate queries data because mutation does not udpate cached data.
        await queryClient.invalidateQueries(["userData"])
+       if(data.user.role === 'admin'){
+        navigate('/admin-dashboard', {replace: true})
+       }
+       if(data.user.role === 'user'){
         navigate('/', {replace:true});
-
+       }
     }
   })
 

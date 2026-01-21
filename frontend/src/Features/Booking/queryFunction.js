@@ -13,3 +13,16 @@ export async function GetMyBookings(){
     
     return res.data
 }
+
+export async function GetAllBookingsForDashboard(){
+    const res = await axios({
+        method:'get',
+        url:`${API_URL_BASE}/api/v1/bookings/get-all-bookings-for-dashboard`,
+        headers:{
+            'Content-Type':'application/json'
+        },
+        withCredentials:true
+    })
+    console.log(res.data.data)
+    return res.data.data;
+}

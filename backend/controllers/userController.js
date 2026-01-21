@@ -6,7 +6,8 @@ exports.getMe = catchAsync(async(req, res, next)=>{
         status:"success",
         user:{
               name:req.user.name,
-              email:req.user.email
+              email:req.user.email,
+              role: req.user.role
             }
     })
 })
