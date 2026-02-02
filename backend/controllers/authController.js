@@ -8,7 +8,7 @@ const Email = require("./../utils/email");
 
 // signing token to sent to user after signup and login
 const signToken = id=>{
-    return jwt.sign({_id:id}, process.env.JWT_SECRET, {expiresIn:"1h"})
+    return jwt.sign({_id:id}, process.env.JWT_SECRET, {expiresIn:"24h"})
 }
 
 
@@ -45,7 +45,7 @@ exports.signup = catchAsync(async(req, res, next)=>{
     if(process.env.ENV === 'development'){
         console.log("Now in development mode")
         res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 60*60*1000),
+        expires: new Date(Date.now() + 24*60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
         sameSite:'None',
@@ -54,7 +54,7 @@ exports.signup = catchAsync(async(req, res, next)=>{
     }
     if(process.env.ENV === 'production'){
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 60*60*1000),
+        expires: new Date(Date.now() + 24*60*60*1000),
         secure:true,
         
         httpOnly:true,
@@ -99,7 +99,7 @@ exports.login = catchAsync(async(req, res, next)=>{
     if(process.env.ENV === 'development'){
          console.log("Now in development mode")
         res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 60*60*1000),
+        expires: new Date(Date.now() + 24*60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
         sameSite:'None',
@@ -108,7 +108,7 @@ exports.login = catchAsync(async(req, res, next)=>{
     }
     if(process.env.ENV === 'production'){
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 60*60*1000),
+        expires: new Date(Date.now() + 24*60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
         sameSite:'None',
@@ -136,7 +136,8 @@ exports.login = catchAsync(async(req, res, next)=>{
 // protecting route
 
 exports.protect = catchAsync(async(req, res, next)=>{
-    const token  =req.cookies.jwt;
+    const token  =req?.cookies?.jwt;
+    console.log(token)
     if(!token){
         return next(new appError(401, "You are not logged in! Please login."))
     }
@@ -154,6 +155,7 @@ exports.protect = catchAsync(async(req, res, next)=>{
     // ************* implement it later *********************
     
     req.user = user;
+    console.log(user);
     next();
 })
 

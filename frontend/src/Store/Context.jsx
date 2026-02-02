@@ -22,6 +22,8 @@ function ContextProvider({children}){
     notes: "",
     mobile:"",
     address: "",
+    lat:"",
+    lng:"",
     date: "",
     timeSlot: "",
     addons: [],

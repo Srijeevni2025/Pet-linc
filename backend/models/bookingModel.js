@@ -38,6 +38,8 @@ const bookingSchema = new mongoose.Schema({
     address:{
         type:String
     },
+    lat:String,
+    lng:String,
     date:{
         type:Date
     },
@@ -50,7 +52,13 @@ const bookingSchema = new mongoose.Schema({
     }],
     coupan:String,
     discount:Number,
-    bookingMarkedPrice:String
+    bookingMarkedPrice:String,
+    status:String,
+    assignedGroomer:String,
+    isRead:{
+        type:Boolean,
+        default:false
+    }
 })
 
 
