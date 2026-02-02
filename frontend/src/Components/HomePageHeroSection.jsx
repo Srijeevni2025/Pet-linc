@@ -93,11 +93,17 @@ export default function HomePageHeroSection() {
 
           {/* Glass Title Card */}
           <div className="p-6 rounded-3xl bg-white/50 backdrop-blur-xl shadow-lg border border-white/40 max-w-xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+            {/* <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
               Premium <span className="text-orange-600">Pet Grooming</span>
               <br />
               At Your Home
-            </h1>
+            </h1> */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+  Professional <span className="text-orange-600">Pet Grooming</span>
+  <br />
+  At Your Doorstep in Kolkata
+</h1>
+
 
             <p className="mt-4 text-xl font-medium text-orange-700 flex items-center gap-2">
               <Heart className="text-orange-500" /> Because they deserve the BEST.
@@ -110,6 +116,14 @@ export default function HomePageHeroSection() {
             grooming sessions — right at your doorstep. Designed for comfort,
             convenience & pure happiness.
           </p>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-700 mt-2">
+  <span className="flex items-center gap-1">⭐ 4.8 Rated</span>
+  <span>•</span>
+  <span>125+ Orders Last Month</span>
+  <span>•</span>
+  <span>Verified Groomers</span>
+</div>
+
 
           {/* CTA Buttons */}
           <div className="mt-6 flex flex-wrap gap-4">

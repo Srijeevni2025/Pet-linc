@@ -23,6 +23,6 @@ export async function GetAllBookingsForDashboard(){
         },
         withCredentials:true
     })
-    console.log(res.data.data)
+    
     return res.data.data;
 }

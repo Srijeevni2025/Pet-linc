@@ -19,7 +19,7 @@ export async function Login({email, password}){
         },
         withCredentials:true
     });
-    console.log(res.data)
+    
     return res.data;
 }
 

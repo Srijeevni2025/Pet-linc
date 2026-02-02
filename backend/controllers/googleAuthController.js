@@ -42,12 +42,12 @@ exports.googleLogin = async (req, res, next) => {
     const jwtToken = jwt.sign(
       { _id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "24h" }
     );
 
     // 4️⃣ Send JWT via cookie
     res.cookie("jwt", jwtToken, {
-       expires: new Date(Date.now() + 60*60*1000),
+       expires: new Date(Date.now() + 24*60*60*1000),
         secure:true,   // if it is set to false then the cookies are blocked by browser and will not be attached with any http request from browser side.
         httpOnly:true,
         sameSite:'None',

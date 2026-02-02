@@ -551,6 +551,7 @@ import ProtectedRoute from "./Protect";
 
 export default function BookingModal() {
   const navigate = useNavigate();
+  const [locLoading, setLocLoading] = useState(false);
   const { setShowBookingModal, selectedPackage, setSelectedPackage, form, setForm } =
     useContext(GlobalContext);
 
@@ -728,6 +729,41 @@ function validateStep2(form) {
   return null;
 }
 
+// capturing the current location: lat and lng
+
+
+function captureExactLocation() {
+  if (!navigator.geolocation) {
+    toast.error("Location not supported on this browser");
+    return;
+  }
+
+  setLocLoading(true);
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+
+      setForm((f) => ({
+        ...f,
+        lat: latitude,
+        lng: longitude,
+      }));
+
+      toast.success("Exact location captured successfully");
+      setLocLoading(false);
+    },
+    (err) => {
+      toast.error("Unable to capture location. Please allow permission.");
+      setLocLoading(false);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0,
+    }
+  );
+}
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex justify-center items-center z-[999] p-2 md:p-4">
@@ -881,7 +917,8 @@ function validateStep2(form) {
       />
     </div>
 
-    <div>
+    {/* address: input in form*/}
+    {/* <div>
       <label className="text-sm font-semibold text-gray-600">Address</label>
       <input
         type="text"
@@ -889,7 +926,31 @@ function validateStep2(form) {
         onChange={(e) => setForm({ ...form, address: e.target.value })}
         className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
       />
-    </div>
+    </div> */}
+    <div>
+  <label className="text-sm font-semibold text-gray-600">
+    Service Address
+  </label>
+
+  <div className="flex gap-2 mt-1">
+    <input
+      type="text"
+      value={form.address}
+      onChange={(e) => setForm({ ...form, address: e.target.value })}
+      placeholder="House no, area, city"
+      className="flex-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
+    />
+
+    <button
+      type="button"
+      onClick={captureExactLocation}
+      disabled={locLoading}
+      className="px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 disabled:opacity-50"
+    >
+      {locLoading ? "Detecting..." : "Get exact location"}
+    </button>
+  </div>
+  </div>
 
     <div>
       <label className="text-sm font-semibold text-gray-600">Preferred Date</label>

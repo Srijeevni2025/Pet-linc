@@ -9,5 +9,7 @@ router.route('/get-all-bookings').get(authController.protect, bookingController.
 router.route('/create-addon').post(addonController.createAddon)
 router.route('/get-all-addons').get(addonController.getAllAddons);
 router.route('/get-all-bookings-for-dashboard').get(authController.protect, authController.restrictTo("admin"), bookingController.getAllBookingsForDashboard)
-
+router.route('/change-booking-status/:id').patch(authController.protect, authController.restrictTo("admin"), bookingController.changeStatus);
+router.route('/change-read-status/:id').patch(authController.protect, authController.restrictTo('admin'),bookingController.changeReadStatus)
+router.route('/assign-groomer/:id').patch(authController.protect, authController.restrictTo('admin'), bookingController.assignGroomer)
 module.exports = router;
