@@ -393,7 +393,7 @@ export default function MyBookings() {
   <hr className="my-3" />
 
   <div className="flex justify-between text-lg font-extrabold">
-    <span>Total Paid</span>
+    <span>Total: </span>
     <span className="text-orange-600">₹{totalPaid}</span>
   </div>
 </div>

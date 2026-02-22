@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const addonSchema = new mongoose.Schema({
    
     "name":String,
-    "price":Number
+    "price":Number,
+    "city":String
 })
 
 

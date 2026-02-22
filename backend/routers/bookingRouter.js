@@ -7,7 +7,7 @@ const addonController = require('./../controllers/addonController');
 router.route('/create-new-booking').post(authController.protect, bookingController.createNewBooking)
 router.route('/get-all-bookings').get(authController.protect, bookingController.getAllBookings);
 router.route('/create-addon').post(addonController.createAddon)
-router.route('/get-all-addons').get(addonController.getAllAddons);
+router.route('/get-all-addons/:city').get(addonController.getAllAddons);
 router.route('/get-all-bookings-for-dashboard').get(authController.protect, authController.restrictTo("admin"), bookingController.getAllBookingsForDashboard)
 router.route('/change-booking-status/:id').patch(authController.protect, authController.restrictTo("admin"), bookingController.changeStatus);
 router.route('/change-read-status/:id').patch(authController.protect, authController.restrictTo('admin'),bookingController.changeReadStatus)

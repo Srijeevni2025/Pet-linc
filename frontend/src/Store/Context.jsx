@@ -10,6 +10,8 @@ function ContextProvider({children}){
     const [stepBookingModal, setStepBookingModal] = useState(1);
     const isLoggedInRef = useRef(false);
     const [selectedProduct, setSelectedProduct] = useState('')  //
+    const [currentCity, setCurrentCity] = useState(localStorage.getItem("currentCity"));
+    const [cityModalOpen, setCityModalOpen] = useState(localStorage.getItem("currentCity")!==null?false:true);
 
       const [form, setForm] = useState({
     productId: "",
@@ -22,6 +24,7 @@ function ContextProvider({children}){
     notes: "",
     mobile:"",
     address: "",
+    pincode:"",
     lat:"",
     lng:"",
     date: "",
@@ -48,7 +51,11 @@ function ContextProvider({children}){
             setSelectedProduct,
             isLoggedInRef,
             form,
-            setForm
+            setForm,
+            currentCity,
+            setCurrentCity,
+            cityModalOpen,
+            setCityModalOpen
         
         }}>
             {children}
