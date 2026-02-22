@@ -38,6 +38,9 @@ const bookingSchema = new mongoose.Schema({
     address:{
         type:String
     },
+    pincode:{
+        type:String
+    },
     lat:String,
     lng:String,
     date:{

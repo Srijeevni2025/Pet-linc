@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, replace, useNavigate } from "react-router-dom";
 import { MapPin, Search, ChevronDown, Menu, X } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -12,12 +12,19 @@ import queryClient from "../Store/queryClient";
 import { GetAllPackages } from "../Features/Packages/queryFunction";
 import { GlobalContext } from "../Store/Context";
 
+const SUPPORTED_CITIES = ['mumbai', 'kolkata']
 
 export default function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [pincode, setPincode] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+
+ 
+  const {currentCity, setCurrentCity} = useContext(GlobalContext);
+
+
 
   const navigate = useNavigate();
   const {isLoggedInRef} = useContext(GlobalContext)
@@ -33,8 +40,12 @@ export default function Navbar() {
     queryFn:GetLoggedInUser,
 
   })
- 
-   
+  
+   useEffect(()=>{
+    // navigate('/', {replace:true});
+    queryClient.refetchQueries(["packages"]);
+
+   },[currentCity])
 
   // logging out function
   const { mutate} = useMutation({
@@ -94,13 +105,33 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6">
 
             {/* PINCODE BUTTON */}
-            <button
+            {/* <button
               onClick={() => setModalOpen(true)}
               className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-orange-600 transition"
             >
               <MapPin size={16} className="text-orange-600" />
               {pincode || "Enter Pincode"}
-            </button>
+            </button> */}
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+  <MapPin size={16} className="text-orange-600" />
+
+  <select
+    value={currentCity}
+    onChange={(e) => {
+      const newCity = e.target.value;
+      setCurrentCity(newCity);
+      localStorage.setItem("currentCity", newCity);
+      navigate('/');
+    }}
+    className="bg-transparent outline-none cursor-pointer hover:text-orange-600"
+  >
+    {SUPPORTED_CITIES.map(c => (
+      <option key={c} value={c}>
+        {c.charAt(0).toUpperCase() + c.slice(1)}
+      </option>
+    ))}
+  </select>
+</div>
 
             {/* AUTH SECTION */}
             {userData ? (
@@ -207,13 +238,34 @@ export default function Navbar() {
             </div> */}
 
             {/* Location */}
-            <button
+            {/* <button
               onClick={() => setModalOpen(true)}
               className="flex items-center gap-2 text-sm text-gray-700"
             >
               <MapPin size={16} className="text-orange-600" />
               {pincode || "Enter Pincode"}
-            </button>
+            </button> */}
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+  <MapPin size={16} className="text-orange-600" />
+  <select
+    value={currentCity}
+    onChange={(e) => {
+      const newCity = e.target.value;
+      setCurrentCity(newCity);
+      localStorage.setItem("currentCity", newCity);
+      
+      
+    }}
+    className="bg-transparent outline-none"
+  >
+    {SUPPORTED_CITIES.map(c => (
+      <option key={c} value={c} >
+        {c.charAt(0).toUpperCase() + c.slice(1)}
+      </option>
+    ))}
+  </select>
+</div>
+
 
             {/* Auth */}
             {userData ? (

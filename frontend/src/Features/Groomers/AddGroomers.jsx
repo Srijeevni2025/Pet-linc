@@ -17,7 +17,7 @@ export default function AddGroomer() {
   })
   function onSubmit(data) {
     mutate(data);
-    console.log("Groomer Data:", data);
+    
   }
 
   return (
