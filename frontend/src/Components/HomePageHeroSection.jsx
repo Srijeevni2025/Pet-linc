@@ -98,10 +98,10 @@ export default function HomePageHeroSection() {
               <br />
               At Your Home
             </h1> */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-  Professional <span className="text-orange-600">Pet Grooming</span>
+            <h1 className="text-5xl sm:text-4xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+  Professional <span className="text-orange-600">Pet Grooming Services</span>
   <br />
-  At Your Doorstep in Kolkata
+   At Your Doorstep
 </h1>
 
 
