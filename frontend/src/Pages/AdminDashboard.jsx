@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
 import { GetAllBookingsForDashboard } from "../Features/Booking/queryFunction";
@@ -8,9 +7,7 @@ import { GetAllGroomers } from "../Features/Groomers/queryFunctions";
 import { Loader } from "lucide-react";
 import queryClient from "../Store/queryClient";
 
-
-
-const API_URL_BASE = import.meta.env.VITE_BASE_URL
+const API_URL_BASE = import.meta.env.VITE_BASE_URL;
 
 export default function AdminDashboard() {
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -20,86 +17,90 @@ export default function AdminDashboard() {
   const [toDate, setToDate] = useState("");
   const [todayOnly, setTodayOnly] = useState(false);
   const [tomorrowOnly, setTomorrowOnly] = useState(false);
-  const [readFilter, setReadFilter] = useState("all"); 
+  const [readFilter, setReadFilter] = useState("all");
 
-
-
-  const { data: bookings = [], isPending, refetch } = useQuery({
+  const {
+    data: bookings = [],
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: ["bookings"],
     queryFn: GetAllBookingsForDashboard,
   });
-  
-   const {data:groomers} = useQuery({
-    queryKey:["groomers"],
-    queryFn:GetAllGroomers
-   })
 
-   const changeReadStatus = useMutation({
-    mutationFn:async()=>{
-      await axios.patch(`${API_URL_BASE}/api/v1/bookings/change-read-status/${selectedBooking._id}`, {}, {withCredentials:true})
-    },
-    onSuccess:async()=>{
-      queryClient.invalidateQueries(['bookings'])
-    }
-  })
-
-
-const groomerMap = useMemo(() => {
-  const map = {};
-  groomers?.forEach((g) => {
-    map[g._id] = g;
+  const { data: groomers } = useQuery({
+    queryKey: ["groomers"],
+    queryFn: GetAllGroomers,
   });
-  return map;
-}, [groomers]);
 
+  const changeReadStatus = useMutation({
+    mutationFn: async () => {
+      await axios.patch(
+        `${API_URL_BASE}/api/v1/bookings/change-read-status/${selectedBooking._id}`,
+        {},
+        { withCredentials: true },
+      );
+    },
+    onSuccess: async () => {
+      queryClient.invalidateQueries(["bookings"]);
+    },
+  });
 
+  const groomerMap = useMemo(() => {
+    const map = {};
+    groomers?.forEach((g) => {
+      map[g._id] = g;
+    });
+    return map;
+  }, [groomers]);
 
   const filteredBookings = useMemo(() => {
-  return bookings.filter((b) => {
-    const text = `${b.petName} ${b.userId?.name} ${b.userId?.email}`.toLowerCase();
-    const matchesSearch = text.includes(search.toLowerCase());
+    return bookings.filter((b) => {
+      const text =
+        `${b.petName} ${b.userId?.name} ${b.userId?.email}`.toLowerCase();
+      const matchesSearch = text.includes(search.toLowerCase());
 
-    const matchesStatus =
-      statusFilter === "all" ||
-      (b.status || "pending") === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || (b.status || "pending") === statusFilter;
 
-    const matchesRead =
-      readFilter === "all" ||
-      (readFilter === "unread" && !b.isRead) ||
-      (readFilter === "read" && b.isRead);
+      const matchesRead =
+        readFilter === "all" ||
+        (readFilter === "unread" && !b.isRead) ||
+        (readFilter === "read" && b.isRead);
 
-    let matchesDate = true;
-    const bookingDate = new Date(b.date);
-    const today = new Date();
-    const tomorrow = new Date(new Date().setDate(today.getDate() + 1));
+      let matchesDate = true;
+      const bookingDate = new Date(b.date);
+      const today = new Date();
+      const tomorrow = new Date(new Date().setDate(today.getDate() + 1));
 
-    if (todayOnly) {
-      matchesDate =
-        bookingDate.getDate() === today.getDate() &&
-        bookingDate.getMonth() === today.getMonth() &&
-        bookingDate.getFullYear() === today.getFullYear();
-    } else if (tomorrowOnly) {
-      matchesDate =
-        bookingDate.getDate() === tomorrow.getDate() &&
-        bookingDate.getMonth() === tomorrow.getMonth() &&
-        bookingDate.getFullYear() === tomorrow.getFullYear();
-    } else {
-      if (fromDate) matchesDate = bookingDate >= new Date(fromDate);
-      if (toDate) matchesDate = matchesDate && bookingDate <= new Date(toDate);
-    }
+      if (todayOnly) {
+        matchesDate =
+          bookingDate.getDate() === today.getDate() &&
+          bookingDate.getMonth() === today.getMonth() &&
+          bookingDate.getFullYear() === today.getFullYear();
+      } else if (tomorrowOnly) {
+        matchesDate =
+          bookingDate.getDate() === tomorrow.getDate() &&
+          bookingDate.getMonth() === tomorrow.getMonth() &&
+          bookingDate.getFullYear() === tomorrow.getFullYear();
+      } else {
+        if (fromDate) matchesDate = bookingDate >= new Date(fromDate);
+        if (toDate)
+          matchesDate = matchesDate && bookingDate <= new Date(toDate);
+      }
 
-    return matchesSearch && matchesStatus && matchesRead && matchesDate;
-  });
-}, [
-  bookings,
-  search,
-  statusFilter,
-  readFilter,
-  fromDate,
-  toDate,
-  todayOnly,
-  tomorrowOnly,
-]);
+      return matchesSearch && matchesStatus && matchesRead && matchesDate;
+    });
+  }, [
+    bookings,
+    search,
+    statusFilter,
+    readFilter,
+    fromDate,
+    toDate,
+    todayOnly,
+    tomorrowOnly,
+  ]);
 
   if (isPending) {
     return (
@@ -111,7 +112,7 @@ const groomerMap = useMemo(() => {
 
   return (
     <div className="min-h-screen bg-[#f4f6fb] p-8 text-gray-800">
-     <AdminNavbar/>
+      <AdminNavbar />
       {/* Header */}
       {/* <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900">Admin · Bookings</h1>
@@ -139,20 +140,17 @@ const groomerMap = useMemo(() => {
           <option value="on_the_way">On The Way</option>
           <option value="completed">Completed</option>
           <option value="cancelled">Cancelled</option>
-        
         </select>
 
         <select
-  value={readFilter}
-  onChange={(e) => setReadFilter(e.target.value)}
-  className="px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-sm"
->
-  <option value="all">All</option>
-  <option value="unread">Unread</option>
-  <option value="read">Read</option>
-</select>
-
-
+          value={readFilter}
+          onChange={(e) => setReadFilter(e.target.value)}
+          className="px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-sm"
+        >
+          <option value="all">All</option>
+          <option value="unread">Unread</option>
+          <option value="read">Read</option>
+        </select>
 
         <input
           type="date"
@@ -184,11 +182,11 @@ const groomerMap = useMemo(() => {
         >
           📅 Today
         </button>
-         {/* 🆕 TOMORROW BUTTON */}
+        {/* 🆕 TOMORROW BUTTON */}
         <button
           onClick={() => {
             setTomorrowOnly(!tomorrowOnly);
-            setTodayOnly(false)
+            setTodayOnly(false);
             setFromDate("");
             setToDate("");
           }}
@@ -201,21 +199,20 @@ const groomerMap = useMemo(() => {
         >
           📅 Tomorrow
         </button>
-      
-      <button
-  onClick={() =>
-    setReadFilter((prev) => (prev === "unread" ? "all" : "unread"))
-  }
-  className={`px-4 py-2 rounded-xl text-sm font-semibold border shadow-sm
+
+        <button
+          onClick={() =>
+            setReadFilter((prev) => (prev === "unread" ? "all" : "unread"))
+          }
+          className={`px-4 py-2 rounded-xl text-sm font-semibold border shadow-sm
     ${
       readFilter === "unread"
         ? "bg-orange-600 text-white border-orange-600"
         : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
     }`}
->
-  🔔 Unread Only
-</button>
-
+        >
+          🔔 Unread Only
+        </button>
       </div>
 
       {/* Table */}
@@ -240,72 +237,96 @@ const groomerMap = useMemo(() => {
 
             <tbody className="divide-y divide-slate-100">
               {filteredBookings.map((b, i) => (
-                <tr key={b._id} className={`hover:bg-slate-50 transition ${!b.isRead?"bg-orange-50":""}`}>
-                 <td className="px-4 py-3 font-mono text-xs text-slate-400">{i+1} {!b.isRead &&<span className = "text-orange-600 bg-orange-100 rounded-3xl p-2 mx-4">New</span>}</td>
+                <tr
+                  key={b._id}
+                  className={`hover:bg-slate-50 transition ${!b.isRead ? "bg-orange-50" : ""}`}
+                >
+                  <td className="px-4 py-3 font-mono text-xs text-slate-400">
+                    {i + 1}{" "}
+                    {!b.isRead && (
+                      <span className="text-orange-600 bg-orange-100 rounded-3xl p-2 mx-4">
+                        New
+                      </span>
+                    )}
+                  </td>
                   {/* <td className="px-4 py-3 font-mono text-xs text-slate-400">{b._id.slice(-6)}</td> */}
 
                   <td className="px-4 py-3">
                     <div className="font-medium">{b.userId?.name}</div>
-                    <div className="text-xs text-slate-400">{b.userId?.email}</div>
+                    <div className="text-xs text-slate-400">
+                      {b.userId?.email}
+                    </div>
                   </td>
 
                   <td className="px-4 py-3">{b.petName}</td>
                   <td className="px-4 py-3">{b.productId?.name}</td>
-                  <td className = "px-4 py-3">
-                    <div className="font-medium">{new Date(b.date).toDateString()}</div>
+                  <td className="px-4 py-3">
+                    <div className="font-medium">
+                      {new Date(b.date).toDateString()}
+                    </div>
                     <div className="text-xs text-slate-400">{b.timeSlot}</div>
                   </td>
-                  <td className="px-4 py-3 font-semibold">₹{b.bookingMarkedPrice - b.discount}</td>
+                  <td className="px-4 py-3 font-semibold">
+                    ₹{b.bookingMarkedPrice - b.discount}
+                  </td>
 
-                  <td className="px-4 py-3"><StatusPill status={b.status || "pending"} /></td>
+                  <td className="px-4 py-3">
+                    <StatusPill status={b.status || "pending"} />
+                  </td>
 
                   <td className="px-4 py-3 space-x-2">
                     {b.addons?.length > 0 && (
-                      <span className="px-2 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs">+ Add-ons</span>
+                      <span className="px-2 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs">
+                        + Add-ons
+                      </span>
                     )}
                     {b.aggression === "3" && (
-                      <span className="px-2 py-1 rounded-full bg-red-50 text-red-600 text-xs">⚠Aggressive</span>
+                      <span className="px-2 py-1 rounded-full bg-red-50 text-red-600 text-xs">
+                        ⚠Aggressive
+                      </span>
                     )}
                   </td>
-                  
-                   {/* <td className="px-4 py-3 font-semibold">{groomers.map((groomer)=>{if(groomer._id===b.assignedGroomer) return groomer.name})}</td> */}
 
-                    <td className="px-4 py-3">
-  {groomerMap[b.assignedGroomer] ? (
-    <div className="relative group inline-block">
-      {/* Groomer Name */}
-      <span className="font-semibold text-indigo-600 cursor-pointer underline decoration-dotted">
-        {groomerMap[b.assignedGroomer].name}
-      </span>
+                  {/* <td className="px-4 py-3 font-semibold">{groomers.map((groomer)=>{if(groomer._id===b.assignedGroomer) return groomer.name})}</td> */}
 
-      {/* Tooltip */}
-      <div className="absolute z-50 hidden group-hover:block left-1/2 -translate-x-1/2 mt-2 w-64 rounded-xl bg-white border border-slate-200 shadow-xl p-3 text-xs">
-        <p className="font-semibold text-slate-800">
-          {groomerMap[b.assignedGroomer].name}
-        </p>
-        <p className="text-slate-500">
-          📞 {groomerMap[b.assignedGroomer].phone}
-        </p>
-        <p className="text-slate-500">
-          📍 {groomerMap[b.assignedGroomer].city}
-        </p>
-        <p className="text-slate-500">
-          ⭐ Rating: {groomerMap[b.assignedGroomer].rating || "N/A"}
-        </p>
-      </div>
-    </div>
-  ) : (
-    <span className="text-slate-400 italic">Not assigned</span>
-  )}
-</td>
+                  <td className="px-4 py-3">
+                    {groomerMap[b.assignedGroomer] ? (
+                      <div className="relative group inline-block">
+                        {/* Groomer Name */}
+                        <span className="font-semibold text-indigo-600 cursor-pointer underline decoration-dotted">
+                          {groomerMap[b.assignedGroomer].name}
+                        </span>
 
-
-
+                        {/* Tooltip */}
+                        <div className="absolute z-50 hidden group-hover:block left-1/2 -translate-x-1/2 mt-2 w-64 rounded-xl bg-white border border-slate-200 shadow-xl p-3 text-xs">
+                          <p className="font-semibold text-slate-800">
+                            {groomerMap[b.assignedGroomer].name}
+                          </p>
+                          <p className="text-slate-500">
+                            📞 {groomerMap[b.assignedGroomer].phone}
+                          </p>
+                          <p className="text-slate-500">
+                            📍 {groomerMap[b.assignedGroomer].city}
+                          </p>
+                          <p className="text-slate-500">
+                            ⭐ Rating:{" "}
+                            {groomerMap[b.assignedGroomer].rating || "N/A"}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-slate-400 italic">
+                        Not assigned
+                      </span>
+                    )}
+                  </td>
 
                   <td className="px-4 py-3">
                     <button
-                      onClick={() => {setSelectedBooking(b); changeReadStatus.mutate()}}
-
+                      onClick={() => {
+                        setSelectedBooking(b);
+                        changeReadStatus.mutate();
+                      }}
                       className="px-3 py-1 rounded-lg bg-indigo-600/10 text-indigo-600 hover:bg-indigo-600/20 text-xs font-semibold"
                     >
                       View
@@ -333,75 +354,124 @@ const groomerMap = useMemo(() => {
 
 function FullPageBookingView({ booking, onClose, onUpdated }) {
   const [status, setStatus] = useState(booking.status || "pending");
-  const [assignedGroomer, setAssignedGroomer] = useState(booking.assignedGroomer || "");
- 
+  const [assignedGroomer, setAssignedGroomer] = useState(
+    booking.assignedGroomer || "",
+  );
 
-  const {data:groomers, isPending} = useQuery({
-    queryKey:["groomers"],
-    queryFn:GetAllGroomers
-  })
-  
+  const { data: groomers, isPending } = useQuery({
+    queryKey: ["groomers"],
+    queryFn: GetAllGroomers,
+  });
+
   const updateStatus = useMutation({
     mutationFn: async () => {
-     const res =  await axios({
-      method:'patch',
-      url:`${API_URL_BASE}/api/v1/bookings/change-booking-status/${booking._id}`,
-      headers:{
-        'Content-Type':'application/json'
-      },
-      data:{
-        status:status
-      },
-      withCredentials:true
+      const res = await axios({
+        method: "patch",
+        url: `${API_URL_BASE}/api/v1/bookings/change-booking-status/${booking._id}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          status: status,
+        },
+        withCredentials: true,
+      });
 
-     })
-     
-     return res.data;
-     
+      return res.data;
     },
-    
+
     onSuccess: () => onUpdated(),
-    
   });
 
   const assignGroomer = useMutation({
     mutationFn: async () => {
-      
-      await axios.patch(`${API_URL_BASE}/api/v1/bookings/assign-groomer/${booking._id}`, { groomerId: assignedGroomer }, {withCredentials:true});
+      await axios.patch(
+        `${API_URL_BASE}/api/v1/bookings/assign-groomer/${booking._id}`,
+        { groomerId: assignedGroomer },
+        { withCredentials: true },
+      );
     },
     onSuccess: () => onUpdated(),
   });
 
-  
-
-  if(isPending){
-    return <Loader/>
+  if (isPending) {
+    return <Loader />;
   }
   const steps = ["pending", "confirmed", "on_the_way", "completed"];
+
+  const handleCopyDetails = async () => {
+    const formattedText = `
+Name - ${booking.userId?.name || ""}
+Contact - ${booking.mobile || ""}
+Location - ${booking.address || ""}
+Date - ${booking.date ? new Date(booking.date).toLocaleDateString() : ""}
+Time - ${booking.timeSlot || ""}
+Breed - ${booking.breed || ""}
+Package - ${booking.productId?.name || ""}
+Add Ons - ${
+      booking.addons?.length
+        ? booking.addons.map((a) => a.name || a).join(", ")
+        : "None"
+    }
+Total Price - ₹${booking.bookingMarkedPrice - booking.discount}
+  `;
+
+    try {
+      await navigator.clipboard.writeText(formattedText.trim());
+      alert("Booking details copied to clipboard ✅");
+    } catch (err) {
+      console.error("Copy failed", err);
+      alert("Failed to copy");
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-[#f4f6fb] overflow-y-auto">
       {/* Top Bar */}
       <div className="sticky top-0 z-20 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold">Booking #{booking._id.slice(-6)}</h2>
+          <h2 className="text-2xl font-bold">
+            Booking #{booking._id.slice(-6)}
+          </h2>
           <p className="text-sm text-slate-500">Full Booking View</p>
         </div>
-        <button onClick={onClose} className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm">Close</button>
+
+        {/* <div className="sticky top-0 z-20 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm">
+          <div className="flex gap-3"> */}
+            <button
+              onClick={handleCopyDetails}
+              className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold"
+            >
+              📋 Copy Details
+            </button>
+          {/* </div>
+        </div> */}
+
+        <button
+          onClick={onClose}
+          className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm"
+        >
+          Close
+        </button>
       </div>
 
       <div className="p-8 space-y-8">
-
         {/* STATUS TIMELINE */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-slate-500 mb-4 uppercase">Status Timeline</h3>
+          <h3 className="text-sm font-semibold text-slate-500 mb-4 uppercase">
+            Status Timeline
+          </h3>
           <div className="flex items-center justify-between">
             {steps.map((s, i) => (
               <div key={s} className="flex-1 flex flex-col items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${steps.indexOf(status) >= i ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-500"}`}>
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${steps.indexOf(status) >= i ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-500"}`}
+                >
                   {i + 1}
                 </div>
-                <span className="mt-2 text-xs capitalize text-slate-600">{s.replaceAll("_", " ")}</span>
+                <span className="mt-2 text-xs capitalize text-slate-600">
+                  {s.replaceAll("_", " ")}
+                </span>
               </div>
             ))}
           </div>
@@ -436,8 +506,14 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
               onChange={(e) => setAssignedGroomer(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-white border border-slate-200"
             >
-               <option value = "">Select Groomer</option>
-              {groomers.map((groomer)=>{return <option key = {groomer._id} value = {groomer._id}>{groomer.name}</option>})}
+              <option value="">Select Groomer</option>
+              {groomers.map((groomer) => {
+                return (
+                  <option key={groomer._id} value={groomer._id}>
+                    {groomer.name}
+                  </option>
+                );
+              })}
               {/* <option value="">Select Groomer</option>
               <option value="g1">Rahul Sharma</option>
               <option value="g2">Amit Verma</option>
@@ -459,8 +535,12 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
             <ul className="space-y-2">
               {booking.statusHistory.map((h, i) => (
                 <li key={i} className="flex justify-between text-sm">
-                  <span className="capitalize">{h.status.replaceAll("_", " ")}</span>
-                  <span className="text-slate-400">{h.changedBy} · {new Date(h.changedAt).toLocaleString()}</span>
+                  <span className="capitalize">
+                    {h.status.replaceAll("_", " ")}
+                  </span>
+                  <span className="text-slate-400">
+                    {h.changedBy} · {new Date(h.changedAt).toLocaleString()}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -471,13 +551,20 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
 
         {/* DETAILS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
           {/* CUSTOMER + MAP */}
           <InfoCard title="Customer & Location">
-            <p><strong>Name:</strong> {booking.userId?.name}</p>
-            <p><strong>Email:</strong> {booking.userId?.email}</p>
-            <p><strong>Mobile:</strong> {booking.mobile}</p>
-            <p><strong>Address:</strong> {booking.address}</p>
+            <p>
+              <strong>Name:</strong> {booking.userId?.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {booking.userId?.email}
+            </p>
+            <p>
+              <strong>Mobile:</strong> {booking.mobile}
+            </p>
+            <p>
+              <strong>Address:</strong> {booking.address}
+            </p>
 
             {booking.lat && booking.lng && (
               <div className="mt-4 space-y-3">
@@ -504,17 +591,31 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
 
           {/* PET */}
           <InfoCard title="Pet">
-            <p><strong>Name:</strong> {booking.petName}</p>
-            <p><strong>Type:</strong> {booking.petType}</p>
-            <p><strong>Breed:</strong> {booking.breed}</p>
-            <p><strong>Aggression:</strong> {booking.aggression}</p>
+            <p>
+              <strong>Name:</strong> {booking.petName}
+            </p>
+            <p>
+              <strong>Type:</strong> {booking.petType}
+            </p>
+            <p>
+              <strong>Breed:</strong> {booking.breed}
+            </p>
+            <p>
+              <strong>Aggression:</strong> {booking.aggression}
+            </p>
           </InfoCard>
 
           {/* PACKAGE DETAILS */}
           <InfoCard title="Package Details">
-            <p><strong>Name:</strong> {booking.productId?.name}</p>
-            <p><strong>Tag:</strong> {booking.productId?.tag}</p>
-            <p><strong>Base Price:</strong> ₹{booking.productId?.price}</p>
+            <p>
+              <strong>Name:</strong> {booking.productId?.name}
+            </p>
+            <p>
+              <strong>Tag:</strong> {booking.productId?.tag}
+            </p>
+            <p>
+              <strong>Base Price:</strong> ₹{booking.productId?.price}
+            </p>
 
             {booking.productId?.freeServices?.length > 0 && (
               <div className="mt-2">
@@ -543,7 +644,9 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
           <InfoCard title="Pricing">
             <p>Marked: ₹{booking.bookingMarkedPrice}</p>
             <p>Discount: ₹{booking.discount}</p>
-            <p className="font-bold text-emerald-600">Final: ₹{booking.bookingMarkedPrice - booking.discount}</p>
+            <p className="font-bold text-emerald-600">
+              Final: ₹{booking.bookingMarkedPrice - booking.discount}
+            </p>
           </InfoCard>
         </div>
       </div>
@@ -556,7 +659,9 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
 function InfoCard({ title, children }) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-      <h3 className="text-sm font-semibold text-slate-500 mb-3 uppercase">{title}</h3>
+      <h3 className="text-sm font-semibold text-slate-500 mb-3 uppercase">
+        {title}
+      </h3>
       <div className="space-y-1 text-sm text-slate-700">{children}</div>
     </div>
   );
@@ -572,7 +677,9 @@ function StatusPill({ status }) {
   };
 
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${map[status] || "bg-slate-100 text-slate-500"}`}>
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-semibold ${map[status] || "bg-slate-100 text-slate-500"}`}
+    >
       {status}
     </span>
   );
