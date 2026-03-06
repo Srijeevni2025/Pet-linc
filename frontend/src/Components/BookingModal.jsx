@@ -638,10 +638,10 @@ export default function BookingModal() {
                     className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
                   >
                     <option value="">Select Slot</option>
-                    <option>10 AM - 12 PM</option>
+                    <option>9 AM - 11 PM</option>
                     <option>12 PM - 2 PM</option>
-                    <option>2 PM - 4 PM</option>
-                    <option>4 PM - 6 PM</option>
+                    <option>3 PM - 5 PM</option>
+                    <option>5 PM - 7 PM</option>
                   </select>
                 </div>
 
