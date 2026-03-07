@@ -249,7 +249,7 @@ export default function BookingModal() {
   }
 
   let currDate = new Date();
-  currDate.setDate(currDate.getDate() + 2);
+  currDate.setDate(currDate.getDate());
   let minBookingDate = currDate.toLocaleDateString('en-CA').split('T')[0];
   
   return (
