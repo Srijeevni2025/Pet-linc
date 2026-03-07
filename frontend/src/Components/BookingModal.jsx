@@ -210,7 +210,9 @@ export default function BookingModal() {
     // 🔥 GPS intentionally ignored
     return e;
   }
+  
 
+ 
   // capturing the current location: lat and lng
 
   function captureExactLocation() {
@@ -246,6 +248,10 @@ export default function BookingModal() {
     );
   }
 
+  let currDate = new Date();
+  currDate.setDate(currDate.getDate() + 2);
+  let minBookingDate = currDate.toLocaleDateString('en-CA').split('T')[0];
+  
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex justify-center items-center z-[999] p-2 md:p-4">
       <div
@@ -619,7 +625,7 @@ export default function BookingModal() {
                   </label>
                   <input
                     type="date"
-                    min={new Date().toISOString().split("T")[0]}
+                    min={minBookingDate}
                     value={form.date}
                     onChange={(e) => setForm({ ...form, date: e.target.value })}
                     className="w-full mt-1 px-4 py-2.5 border rounded-xl bg-gray-50 focus:ring-2 focus:ring-orange-500"
