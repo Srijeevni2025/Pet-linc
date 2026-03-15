@@ -25,6 +25,7 @@ function ContextProvider({children}){
     mobile:"",
     address: "",
     pincode:"",
+    city:"",
     lat:"",
     lng:"",
     date: "",

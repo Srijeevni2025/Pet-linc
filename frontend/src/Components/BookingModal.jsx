@@ -7,6 +7,8 @@ import { useNavigate } from "react-router";
 import { GetAddOns } from "../Features/Packages/queryFunction";
 import ProtectedRoute from "./Protect";
 import { CheckCircle, MapPin } from "lucide-react";
+import { GetSlotAvailability } from "../Features/Booking/queryFunction";
+import queryClient from "../Store/queryClient";
 
 export default function BookingModal() {
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export default function BookingModal() {
   // sample T&C text — replace with your actual terms as needed
   const termsText = [
     "Customer must ensure pet is healthy and free from contagious conditions.",
-    "Cancellation within 24 hours may incur charges as per company policy.",
+    "Cancellation within 2 hours may incur charges of Rs 150 as per company policy.",
     "Payment is due on completion unless prepaid online.",
     "It is not possible to operate trimmers/ clippers in knotted and mated body, so a zero haircut or \
     an uneven haircut can be an output. If pet gets aggressive while the grooming, please assist our professionals in \
@@ -68,6 +70,18 @@ export default function BookingModal() {
   let addonsList = addons?.data;
   let coupans = addons?.coupans;
 
+
+  /* IMPORTANT: getting slots availability for the selected date and package (productId) to disable already booked slots.*/
+  const { data: slotCounts, refetch: refetchSlots } = useQuery({
+  queryKey: ["slotAvailability", form.date],
+  queryFn: () => GetSlotAvailability(form.date, form.productId),
+  enabled: !!form.date, // only fetch when a date is selected
+});
+
+const MAX_PER_SLOT = 3; // max bookings allowed per slot  
+const slots = ["9 AM - 11 PM", "12 PM - 2 PM", "3 PM - 5 PM", "5 PM - 7 PM"];
+
+
   useEffect(() => {
     setForm((f) => ({ ...f, productId: selectedPackage?._id }));
   }, [selectedPackage]);
@@ -82,6 +96,7 @@ export default function BookingModal() {
     mutationFn: CreateBooking,
     onSuccess: async () => {
       toast.success("Booking created successfully.");
+      queryClient.invalidateQueries(["slotAvailability", form.date]); // refresh slot availability after booking
       setShowBookingModal(false);
       setSelectedPackage(null);
       navigate("/booking-success");
@@ -121,6 +136,9 @@ export default function BookingModal() {
       toast.error("Please accept terms & conditions before confirming.");
       return;
     }
+    const city = localStorage.getItem("currentCity");
+    setForm({...form, city:city});
+    
     // send payload (including coupon info)
     mutate({ ...form, coupon: appliedCoupon || null, discount: discount || 0 });
   }
@@ -632,7 +650,7 @@ export default function BookingModal() {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="text-sm font-semibold text-gray-600">
                     Preferred Time Slot
                   </label>
@@ -649,7 +667,66 @@ export default function BookingModal() {
                     <option>3 PM - 5 PM</option>
                     <option>5 PM - 7 PM</option>
                   </select>
-                </div>
+                </div> */}
+                <div>
+  <label className="text-sm font-semibold text-gray-600">
+    Preferred Time Slot
+  </label>
+
+  {!form.date ? (
+    <p className="text-xs text-gray-400 mt-2">
+      Please select a date first to see available slots.
+    </p>
+  ) : (
+    <div className="grid grid-cols-2 gap-3 mt-2">
+      {slots.map((slot) => {
+      
+        const count = slotCounts?.data?.[slot] || 0;
+        const isFull = count >= MAX_PER_SLOT;
+        const isSelected = form.timeSlot === slot;
+
+        return (
+          <button
+            key={slot}
+            type="button"
+            disabled={isFull}
+            onClick={() => {
+              if (!isFull) {
+                setForm({ ...form, timeSlot: slot });
+                setErrors((prev) => ({ ...prev, timeSlot: undefined }));
+              }
+            }}
+            className={`
+              relative px-4 py-3 rounded-xl border text-sm font-medium transition
+              ${isFull
+                ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through"
+                : isSelected
+                ? "bg-orange-600 text-white border-orange-600 shadow"
+                : "bg-white text-gray-700 border-gray-300 hover:border-orange-400"
+              }
+            `}
+          >
+            {slot}
+            {isFull && (
+              <span className="block text-xs font-normal text-red-400 no-underline" style={{ textDecoration: "none" }}>
+                Fully Booked
+              </span>
+            )}
+            {!isFull && (
+              <span className="block text-xs font-normal text-gray-400">
+                {MAX_PER_SLOT - count} spot{MAX_PER_SLOT - count !== 1 ? "s" : ""} left
+              </span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  )}
+
+  {errors.timeSlot && (
+    <p className="text-xs text-red-600 mt-1">{errors.timeSlot}</p>
+  )}
+</div>
 
                 {/* ---------------- ALWAYS VISIBLE TERMS & CONDITIONS ---------------- */}
                 <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">

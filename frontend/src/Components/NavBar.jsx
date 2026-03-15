@@ -273,7 +273,7 @@ export default function Navbar() {
                 <Link to="/my-profile"  className="block text-sm text-gray-700">
                   My Profile
                 </Link>
-                <Link to="/my-bookings" className="block text-sm text-gray-700">
+                <Link to="/my-bookings"  className="block text-sm text-gray-700">
                   My Bookings
                 </Link>
                 <button onClick={handleLogout} className="text-red-600">
