@@ -26,3 +26,32 @@ export async function GetAllBookingsForDashboard(){
     
     return res.data.data;
 }
+
+export async function CancelBooking(bookingId){
+    const res = await axios({
+        method:'patch',
+        url:`${API_URL_BASE}/api/v1/bookings/cancel-booking/${bookingId}`,
+        headers:{
+            'Content-Type':'application/json'
+        },
+        data:{
+            status:'cancelled by user'
+        },
+        withCredentials:true
+    })
+    
+    return res.data;
+}
+
+export const GetSlotAvailability = async(date, productId) => {
+    const res = await axios({
+        method:'get',
+        url:`${API_URL_BASE}/api/v1/bookings/get-slot-availability?data=${date}&productId=${productId}`,
+        headers:{
+            'Content-Type':'application/json'
+        },
+        withCredentials:true
+    })
+    
+    return res.data;
+}

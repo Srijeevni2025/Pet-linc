@@ -16,3 +16,18 @@ export async function CreateBooking(formData){
 
     return res.data;
 }
+
+// canel booking
+export async function CancelBooking(bookingId){
+    const res = await axios({
+        method:'put',
+        url:`${API_URL_BASE}/api/v1/bookings/cancel-booking/${bookingId}`,
+        headers:{
+            'Content-Type':'application/json'
+        },
+        data:{
+            status:'cancelled'
+        }
+    })
+    return res.data;
+}
