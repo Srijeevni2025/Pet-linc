@@ -137,7 +137,7 @@ exports.login = catchAsync(async(req, res, next)=>{
 
 exports.protect = catchAsync(async(req, res, next)=>{
     const token  =req?.cookies?.jwt;
-    console.log(token)
+    
     if(!token){
         return next(new appError(401, "You are not logged in! Please login."))
     }
@@ -155,7 +155,7 @@ exports.protect = catchAsync(async(req, res, next)=>{
     // ************* implement it later *********************
     
     req.user = user;
-    console.log(user);
+    
     next();
 })
 

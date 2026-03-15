@@ -12,4 +12,7 @@ router.route('/get-all-bookings-for-dashboard').get(authController.protect, auth
 router.route('/change-booking-status/:id').patch(authController.protect, authController.restrictTo("admin"), bookingController.changeStatus);
 router.route('/change-read-status/:id').patch(authController.protect, authController.restrictTo('admin'),bookingController.changeReadStatus)
 router.route('/assign-groomer/:id').patch(authController.protect, authController.restrictTo('admin'), bookingController.assignGroomer)
+router.route('/cancel-booking/:id').patch(authController.protect, bookingController.changeStatus);
+router.route('/get-slot-availability').get(bookingController.getSlotAvailability)
+
 module.exports = router;
