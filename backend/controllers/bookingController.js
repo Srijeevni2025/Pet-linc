@@ -7,7 +7,7 @@ const appError = require('../utils/appError');
 
 
 exports.createNewBooking = catchAsync(async(req, res, next)=>{
-    let {petName, type:petType, breed, age, weight, notes, address, lat, lng, date, timeSlot, addons, coupan, couponId, discount, mobile, aggression } = req.body;
+    let {petName, type:petType, breed, age, weight, notes, address, pincode, lat, city, lng, date, timeSlot, addons, coupan, couponId, discount, mobile, aggression } = req.body;
     lat = lat*1;
     lng = lng*1;
     
@@ -15,7 +15,7 @@ exports.createNewBooking = catchAsync(async(req, res, next)=>{
 
     const productId = req.body.productId;
     const bookingMarkedPrice = await Package.findById({_id:productId}).select('price');
-    const booking = await Booking.create({userId, productId, petName, mobile, aggression, petType, breed, age, weight, notes, address, lat, lng, date, timeSlot, addons, coupan, discount,bookingMarkedPrice: bookingMarkedPrice.price});
+    const booking = await Booking.create({userId, productId, petName, mobile, aggression, petType, breed, age, weight, notes, address, pincode, city, lat, lng, date, timeSlot, addons, coupan, discount,bookingMarkedPrice: bookingMarkedPrice.price});
     
     res.status(200).json({
         status:"success",
@@ -81,6 +81,33 @@ exports.getAllBookingsForDashboard = catchAsync(async(req, res, next)=>{
         data:bookings
     })
 })
+
+
+// counting bookings per slot for a particular date. This is used in the admin panel to show how many bookings are there for a particular slot.
+
+exports.getSlotAvailability = catchAsync(async(req, res, next)=>{
+     const {date} = req.query;
+     console.log(date)
+     const start = new Date(date);
+     start.setHours(0, 0, 0, 0);
+     const end = new Date(date);
+     end.setHours(23, 59, 59, 999);
+        const bookings = await Booking.find({
+            date:{$gte:start, $lte:end}, 
+            status:{$nin:["cancelled by user", "cancelled"]}
+                    }).select('timeSlot');   
+        const slotCount = {};
+        bookings.forEach(booking => {
+            slotCount[booking.timeSlot] = (slotCount[booking.timeSlot] || 0) + 1;
+        });     
+
+        res.status(200).json({
+            status:"success",
+            data:slotCount
+        })
+    });
+
+
 
 
 
