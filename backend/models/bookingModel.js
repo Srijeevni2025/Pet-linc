@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const AddOn = require('./addonModel');
 const Packages = require('./packageModel')
-const User = require('./userModel')
+const User = require('./userModel');
+const { type } = require('os');
 
 const bookingSchema = new mongoose.Schema({
     productId:{
@@ -57,11 +58,23 @@ const bookingSchema = new mongoose.Schema({
     discount:Number,
     bookingMarkedPrice:String,
     status:String,
-    assignedGroomer:String,
+    assignedGroomer:{
+        type:String,
+        
+    },
     isRead:{
         type:Boolean,
         default:false
-    }
+    },
+    groomerAccepted:{
+        type:Boolean,
+        default:false
+    },
+    statusHistory:[{
+        status:String,
+        changedAt:{type:Date, default:Date.now},
+        changedBy:String
+    }]
 })
 
 
