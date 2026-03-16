@@ -15,6 +15,7 @@ const io = new Server(server, {
       "http://192.168.0.108:5173",
       "https://pet-linc-z3ed.vercel.app",],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true,
   },
 });
 
@@ -31,6 +32,14 @@ io.on('connection', (socket) => {
   socket.on('register_groomer', (groomerId) => {
     connectedGroomers[groomerId] = socket.id;
     console.log(`Groomer ${groomerId} registered with socket ${socket.id}`);
+  });
+
+
+// Groomer sends back their location when admin requests it
+ socket.on('send_location', ({ groomerId, lat, lng }) => {
+    console.log(`Location received from ${groomerId}: ${lat}, ${lng}`);
+    // Forward location to all admin sockets
+    socket.broadcast.emit('groomer_location', { groomerId, lat, lng });
   });
 
   socket.on('disconnect', () => {

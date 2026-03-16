@@ -26,7 +26,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react"
 import ProtectedRoute from "./Components/Protect";
 import AddGroomer from "./Features/Groomers/AddGroomers";
 import GroomersList from "./Features/Groomers/GroomersList";
-
+import GroomerPanel from "./Pages/GroomerPanel";
 
 
 
@@ -55,6 +55,7 @@ root.render(//<React.StrictMode>
         <Route path = "/my-bookings/:id"  element = {<BookingDetails/>}/>
         <Route path = "/add-groomer" element = {<ProtectedRoute><AddGroomer/></ProtectedRoute>}/>
         <Route path = "/groomers-list" element = {<GroomersList/>}/>
+        <Route path = "/groomer-panel" element = {<GroomerPanel/>}/>
     </Routes>
 </BrowserRouter>
 

@@ -50,3 +50,34 @@ exports.protectGroomer = catchAsync(async (req, res, next) => {
   req.groomer = groomer;
   next();
 });
+
+
+// POST /api/v1/groomers/:id/request-location
+exports.requestGroomerLocation = catchAsync(async (req, res, next) => {
+    console.log("Requesting location for groomer ID:", req.params.id);
+  const io = req.app.get('io');
+  const connectedGroomers = req.app.get('connectedGroomers');
+  const groomerSocketId = connectedGroomers[req.params.id];
+
+  if (!groomerSocketId) {
+    return res.status(404).json({ 
+      message: 'Groomer is offline or not connected' 
+    });
+  }
+
+  // ✅ Ask the groomer app to send their location
+  io.to(groomerSocketId).emit('request_location');
+  console.log(`Location requested from groomer ${req.params.id}`);
+
+  res.status(200).json({ 
+    status: 'success', 
+    message: 'Location request sent to groomer' 
+  });
+});
+
+exports.updateFcmToken = catchAsync(async (req, res, next) => {
+  await Groomer.findByIdAndUpdate(req.groomer._id, {
+    fcmToken: req.body.fcmToken,
+  });
+  res.status(200).json({ status: 'success' });
+});
