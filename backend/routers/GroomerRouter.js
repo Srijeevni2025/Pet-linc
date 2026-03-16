@@ -11,5 +11,11 @@ router.get("/my-bookings", groomerAuthController.protectGroomer, groomerBookingC
 router.get("/booking/:id", groomerAuthController.protectGroomer, groomerBookingController.getBookingById);
 router.patch("/booking/:id/accept", groomerAuthController.protectGroomer, groomerBookingController.acceptOrRejectBooking);
 router.patch("/booking/:id/status", groomerAuthController.protectGroomer, groomerBookingController.updateBookingStatus);
-
+// Admin requests groomer location
+router.post('/:id/request-location', groomerAuthController.requestGroomerLocation);
+router.patch(
+  '/fcm-token',
+  groomerAuthController.protectGroomer,
+  groomerAuthController.updateFcmToken
+);
 module.exports = router;

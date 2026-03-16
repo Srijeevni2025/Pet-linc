@@ -165,9 +165,14 @@ password: {
       type: Boolean,
       default: true,
     },
+    fcmToken: {
+  type: String,
+  default: null,
+},
 
   },
-  { timestamps: true }
+  { timestamps: true },
+  
 );
 
 // 🔥 VERY IMPORTANT INDEX (for nearest groomer search)

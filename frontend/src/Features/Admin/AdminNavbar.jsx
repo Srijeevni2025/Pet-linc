@@ -35,6 +35,7 @@ export default function AdminNavbar() {
           <NavItem to="/">Home</NavItem>
           <NavItem to="/add-groomer">Add Groomer</NavItem>
           <NavItem to="/groomers-list">Groomers</NavItem>
+          <NavItem to="/groomer-panel">Groomer Panel</NavItem>
         </div>
 
         {/* RIGHT: ADMIN */}

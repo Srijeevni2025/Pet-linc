@@ -1305,10 +1305,20 @@ Total Price - ₹${(booking.bookingMarkedPrice || 0) - (booking.discount || 0)}
             </select>
             <button
               onClick={() => updateStatus.mutate()}
-              className="mt-3 w-full px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
-            >
-              Update Status
+             disabled={updateStatus.isPending}
+    className={`mt-3 w-full px-4 py-2 rounded-lg font-semibold text-white transition-colors ${
+      updateStatus.isPending
+        ? "bg-indigo-400 cursor-not-allowed"
+        : "bg-indigo-600 hover:bg-indigo-700"
+    }`}>
+               {updateStatus.isPending ? "Updating…" : "Update Status"}
             </button>
+            {updateStatus.isSuccess && (
+    <p className="mt-2 text-sm text-emerald-600 font-medium">✓ Status updated successfully</p>
+  )}
+  {updateStatus.isError && (
+    <p className="mt-2 text-sm text-red-600 font-medium">✗ Failed to update status. Try again.</p>
+  )}
           </InfoCard>
 
           <InfoCard title="Assign Groomer">
@@ -1326,10 +1336,21 @@ Total Price - ₹${(booking.bookingMarkedPrice || 0) - (booking.discount || 0)}
             </select>
             <button
               onClick={() => assignGroomer.mutate()}
-              className="mt-3 w-full px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold"
-            >
-              Assign Groomer
+               disabled={assignGroomer.isPending || !assignedGroomer}
+    className={`mt-3 w-full px-4 py-2 rounded-lg font-semibold text-white transition-colors ${
+      assignGroomer.isPending || !assignedGroomer
+        ? "bg-purple-400 cursor-not-allowed"
+        : "bg-purple-600 hover:bg-purple-700"
+    }`}
+  >
+    {assignGroomer.isPending ? "Assigning…" : "Assign Groomer"}
             </button>
+            {assignGroomer.isSuccess && (
+    <p className="mt-2 text-sm text-emerald-600 font-medium">✓ Groomer assigned successfully</p>
+  )}
+  {assignGroomer.isError && (
+    <p className="mt-2 text-sm text-red-600 font-medium">✗ Failed to assign groomer. Try again.</p>
+  )}
           </InfoCard>
         </div>
 

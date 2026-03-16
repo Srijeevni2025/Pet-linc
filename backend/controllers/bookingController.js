@@ -4,6 +4,8 @@ const AddOn = require("../models/addonModel");
 const catchAsync = require("../utils/catchAsync");
 const Booking = require('./../models/bookingModel');
 const appError = require('../utils/appError');
+const sendNotification = require('../utils/sendNotification');
+const Groomer = require('../models/groomerModel');
 
 
 exports.createNewBooking = catchAsync(async(req, res, next)=>{
@@ -83,6 +85,18 @@ exports.assignGroomer = catchAsync(async(req, res, next)=>{
   } else {
     console.log(`Groomer ${req.body.groomerId} is not connected`);
   } 
+
+  const groomer = await Groomer.findById(req.body.groomerId).select('fcmToken name');
+  console.log('groomer fcmToken:', groomer?.fcmToken);
+if (groomer?.fcmToken) {
+    console.log("fcm")
+  await sendNotification(
+    groomer.fcmToken,
+    '🐾 New Booking Assigned!',
+    `${booking.petName} • ${booking.timeSlot} • ${booking.address}`,
+    { bookingId: booking_id.toString() }
+  );
+}
     res.status(200).json({
         status:"success",
         data:booking
