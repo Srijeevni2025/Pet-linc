@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-
+const bcrypt = require("bcrypt");
 
 
 const groomerSchema = new mongoose.Schema(
@@ -28,7 +28,13 @@ const groomerSchema = new mongoose.Schema(
     //   required: true,
     //   select: false, // never send password to frontend
     // },
-
+     // ADD THIS — password field
+password: {
+  type: String,
+  required: [true, "Password is required"],
+  minlength: 6,
+  select: false,
+},
     // PROFILE
     avatar: {
       type: String, // image URL
@@ -166,6 +172,18 @@ const groomerSchema = new mongoose.Schema(
 
 // 🔥 VERY IMPORTANT INDEX (for nearest groomer search)
 groomerSchema.index({ location: "2dsphere" });
+
+groomerSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+groomerSchema.methods.checkPassword = async function (received, saved) {
+  return await bcrypt.compare(received, saved);
+};
+
+
 const Groomer = mongoose.model("Groomer", groomerSchema);
 
 module.exports = Groomer;

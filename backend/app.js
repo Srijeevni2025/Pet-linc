@@ -18,6 +18,7 @@ const bookingRouter = require('./routers/bookingRouter');
 const coupanRouter = require('./routers/coupanRouter');
 const authRouter = require("./routers/authRouter")
 
+
 // Applying middlewares
 app.set('view engine', ejs);
 app.set('trust proxy', 1)
@@ -44,6 +45,7 @@ app.use("/api/v1/groomers", groomerRouter)
 app.use('/api/v1/packages', packageRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/coupans',coupanRouter);
+
 
 
 

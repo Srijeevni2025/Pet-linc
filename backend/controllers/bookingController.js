@@ -51,11 +51,38 @@ exports.changeReadStatus = catchAsync(async(req, res, next)=>{
 
 exports.assignGroomer = catchAsync(async(req, res, next)=>{
     const booking_id = req?.params?.id;
+
+    const oldBooking = await Booking.findById(booking_id);
+  const oldGroomerId = oldBooking?.assignedGroomer?.toString();
+   
     if(process.env.ENV === 'development'){
         console.log(booking_id)
     }
-    const booking = await Booking.findByIdAndUpdate(booking_id, {assignedGroomer:req.body.groomerId})
+    const booking = await Booking.findByIdAndUpdate(booking_id, {assignedGroomer:req.body.groomerId, groomerAccepted:false})
+   
+    const io = req.app.get('io');
+    const connectedGroomers = req.app.get('connectedGroomers');
+        // ✅ Notify OLD groomer to remove booking from their list
+  if (oldGroomerId && oldGroomerId !== req.body.groomerId) {
+    const oldGroomerSocketId = connectedGroomers[oldGroomerId];
+    if (oldGroomerSocketId) {
+      io.to(oldGroomerSocketId).emit('booking_removed', {
+        bookingId: booking_id,
+      });
+      console.log('✅ Notified old groomer to remove booking');
+    }
+  }
 
+    const groomerSocketId = connectedGroomers[req.body.groomerId];
+    if(groomerSocketId){
+        io.to(groomerSocketId).emit('new_booking',{
+      booking,
+      message: 'You have a new booking assigned!',
+    });
+    console.log(`Notified groomer ${req.body.groomerId}`);
+  } else {
+    console.log(`Groomer ${req.body.groomerId} is not connected`);
+  } 
     res.status(200).json({
         status:"success",
         data:booking
