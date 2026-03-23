@@ -12,6 +12,6 @@ export async function RegisterGroomer(data){
         data:{data},
         withCredentials:true
     })
-
+    console.log(res)
     return res.data;
 }
