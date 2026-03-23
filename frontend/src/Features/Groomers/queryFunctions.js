@@ -13,3 +13,22 @@ export async function GetAllGroomers(){
     
     return res.data.data;
 }
+
+
+export async function VerifyGroomer(id) {
+  const res = await axios.patch(
+    `${API_URL_BASE}/api/v1/groomers/${id}/verify`,
+    {},
+    { withCredentials: true }
+  );
+  return res.data;
+}
+
+export async function ToggleGroomerStatus(id, isActive) {
+  const res = await axios.patch(
+    `${API_URL_BASE}/api/v1/groomers/${id}/toggle-status`,
+    { isActive },
+    { withCredentials: true }
+  );
+  return res.data;
+}

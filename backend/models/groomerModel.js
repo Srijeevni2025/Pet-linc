@@ -17,11 +17,11 @@ const groomerSchema = new mongoose.Schema(
       unique: true,
     },
 
-    email: {
-      type: String,
-      unique: true,
-      lowercase: true,
-    },
+    // email: {
+    //   type: String,
+    //   unique: true,
+    //   lowercase: true,
+    // },
 
     // password: {
     //   type: String,
@@ -175,8 +175,7 @@ password: {
   
 );
 
-// 🔥 VERY IMPORTANT INDEX (for nearest groomer search)
-groomerSchema.index({ location: "2dsphere" });
+
 
 groomerSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
