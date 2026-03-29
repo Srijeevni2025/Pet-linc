@@ -13,6 +13,7 @@ exports.createNewBooking = catchAsync(async(req, res, next)=>{
     lat = lat*1;
     lng = lng*1;
     
+    console.log("Received booking request:", { petName, petType, breed, age, weight, notes, address, pincode, lat, lng, date, timeSlot, addons, coupan, discount, mobile, aggression });
     const userId = req.user._id;
 
     const productId = req.body.productId;
@@ -127,6 +128,7 @@ exports.getAllBookingsForDashboard = catchAsync(async(req, res, next)=>{
 // counting bookings per slot for a particular date. This is used in the admin panel to show how many bookings are there for a particular slot.
 
 exports.getSlotAvailability = catchAsync(async(req, res, next)=>{
+    console.log(req.query.city)
      const {date} = req.query;
      console.log(date)
      const start = new Date(date);
@@ -136,7 +138,9 @@ exports.getSlotAvailability = catchAsync(async(req, res, next)=>{
         const bookings = await Booking.find({
             date:{$gte:start, $lte:end}, 
             status:{$nin:["cancelled by user", "cancelled"]}
-                    }).select('timeSlot');   
+                    ,
+            city:{ $eq: req.query.city }}
+        ).select('timeSlot');   
         const slotCount = {};
         bookings.forEach(booking => {
             slotCount[booking.timeSlot] = (slotCount[booking.timeSlot] || 0) + 1;

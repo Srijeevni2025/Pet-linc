@@ -58,6 +58,11 @@ const bookingSchema = new mongoose.Schema({
     discount:Number,
     bookingMarkedPrice:String,
     status:String,
+    city:String,
+    createdAt:{
+        type:Date,
+        default:Date.now
+    },
     assignedGroomer:{
         type:String,
         

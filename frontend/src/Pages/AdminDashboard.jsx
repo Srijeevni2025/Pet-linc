@@ -1469,6 +1469,7 @@ Total Price - ₹${(booking.bookingMarkedPrice || 0) - (booking.discount || 0)}
           </InfoCard>
 
           <InfoCard title="Pricing">
+            <p>Booking time: {new Date(booking.createdAt).toLocaleString()}</p>
             <p>Marked: ₹{booking.bookingMarkedPrice}</p>
             <p>Discount: ₹{booking.discount}</p>
             <p className="font-bold text-emerald-600">
