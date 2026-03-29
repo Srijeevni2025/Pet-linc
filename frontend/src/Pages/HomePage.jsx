@@ -8,6 +8,8 @@ import TestimonialVideos from "../Components/TestimonialVideos";
 import WhyChooseUs from "../Components/WhyChooseUs";
 import Home from "./Home";
 import { GlobalContext } from "../Store/Context";
+import BoishakhBanner from "../Components/BoishakhBanner";
+import BoishakhAnnouncementBar from "../Components/BoishakhAnnouncementBar";
 
 function HomePage() {
   const { showBookingModal } = useContext(GlobalContext);
@@ -33,8 +35,10 @@ function HomePage() {
           </svg>
         </a>
       )}
+      {/* <BoishakhAnnouncementBar /> */}
       <Navbar />
       <HomePageHeroSection />
+      {/* <BoishakhBanner /> */}
       <GroomingCategory id="grooming-category" />
       <WhyChooseUs />
       <TestimonialVideos />
