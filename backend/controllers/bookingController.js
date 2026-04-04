@@ -31,9 +31,17 @@ exports.changeStatus = catchAsync(async(req, res, next)=>{
     const booking_id = req?.params?.id;
     
     const booking = await Booking.findByIdAndUpdate(booking_id, {status:req.body.status})
+    if (booking.status === "completed" && booking.bookedByPartner && booking.partnerId) {
+        const Partner = require("../models/partnerModel");
+        const partner = await Partner.findById(booking.partnerId);
+        if (partner) {
+        await partner.creditIncentive(booking.partnerIncentive);
+  }
+}
     if(!booking){
         return next(new appError(400, "Unable to update. Something went wrong."))
     }
+
     res.status(200).json({
         status:"success"
     })
@@ -143,9 +151,10 @@ exports.getSlotAvailability = catchAsync(async(req, res, next)=>{
         ).select('timeSlot');   
         const slotCount = {};
         bookings.forEach(booking => {
+            console.log(booking.timeSlot)
             slotCount[booking.timeSlot] = (slotCount[booking.timeSlot] || 0) + 1;
         });     
-
+        console.log(slotCount)
         res.status(200).json({
             status:"success",
             data:slotCount

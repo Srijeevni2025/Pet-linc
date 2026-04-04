@@ -1,5 +1,5 @@
 const catchAsync = require("../utils/catchAsync");
-const User = require("./../models/reviewModel");
+const User = require("./../models/userModel");
 
 exports.getMe = catchAsync(async(req, res, next)=>{
     res.status(200).json({
@@ -11,3 +11,11 @@ exports.getMe = catchAsync(async(req, res, next)=>{
             }
     })
 })
+
+exports.getAllUsers = catchAsync(async(req, res, next)=>{
+    const users = await User.find().select("-password");
+    res.status(200).json({
+        status:"success",
+        data:users
+    })
+});

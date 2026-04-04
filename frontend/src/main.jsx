@@ -27,6 +27,7 @@ import ProtectedRoute from "./Components/Protect";
 import AddGroomer from "./Features/Groomers/AddGroomers";
 import GroomersList from "./Features/Groomers/GroomersList";
 import GroomerPanel from "./Pages/GroomerPanel";
+import PartnerDashboard from "./Pages/PartnerDashboard";
 
 
 
@@ -56,6 +57,14 @@ root.render(//<React.StrictMode>
         <Route path = "/add-groomer" element = {<ProtectedRoute><AddGroomer/></ProtectedRoute>}/>
         <Route path = "/groomers-list" element = {<GroomersList/>}/>
         <Route path = "/groomer-panel" element = {<GroomerPanel/>}/>
+        <Route                                        
+          path = "/partner-dashboard"
+          element = {
+            // <ProtectedRoute allowedRoles={["partner", "admin"]}>
+              <PartnerDashboard/>
+            // </ProtectedRoute>
+          }
+        />
     </Routes>
 </BrowserRouter>
 

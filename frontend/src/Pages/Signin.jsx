@@ -37,6 +37,9 @@ export default function SignIn() {
        if(data.user.role === 'user'){
         navigate('/', {replace:true});
        }
+       if(data.user.role === 'partner'){
+        navigate('/partner-dashboard', {replace:true})
+       }
     }
   })
 
