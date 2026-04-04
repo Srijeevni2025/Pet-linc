@@ -8,7 +8,9 @@ router.route("/signup").post(authController.signup)
 router.route("/login").post(authController.login);
 router.route("/get-me").get(authController.protect, userController.getMe);
 router.route("/logout").post(authController.logout)
-
+router.route("/get-all-users").get(authController.protect,
+                                authController.restrictTo("admin"), 
+                                userController.getAllUsers)
 
 
 

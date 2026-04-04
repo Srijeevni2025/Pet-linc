@@ -30,7 +30,7 @@ function ContextProvider({children}){
     lng:"",
     date: "",
     timeSlot: "",
-    addons: [],
+    // addons: [],
     coupan:"",
     coupanId:"",
     discount:"",

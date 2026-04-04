@@ -17,6 +17,7 @@ const packageRouter = require("./routers/packageRouter");
 const bookingRouter = require('./routers/bookingRouter');
 const coupanRouter = require('./routers/coupanRouter');
 const authRouter = require("./routers/authRouter")
+const partnerRouter = require("./routers/partnerRouter")
 
 
 // Applying middlewares
@@ -45,6 +46,7 @@ app.use("/api/v1/groomers", groomerRouter)
 app.use('/api/v1/packages', packageRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/coupans',coupanRouter);
+app.use('/api/v1/partners', partnerRouter);
 
 
 

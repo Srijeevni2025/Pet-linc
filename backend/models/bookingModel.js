@@ -79,7 +79,28 @@ const bookingSchema = new mongoose.Schema({
         status:String,
         changedAt:{type:Date, default:Date.now},
         changedBy:String
-    }]
+    }],
+        // ── PARTNER BOOKING FIELDS ──────────────────────────────
+        bookedByPartner: {
+            type: Boolean,
+            default: false
+        },
+        partnerId: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Partner',
+            default: null
+        },
+        // 15% of bookingMarkedPrice, computed at booking creation time
+        partnerIncentive: {
+            type: Number,
+            default: 0
+        },
+        // Track payout status for this booking's incentive
+        incentivePaid: {
+            type: Boolean,
+            default: false
+        }
+        // ───────────────────────────────────────────────────────
 })
 
 
