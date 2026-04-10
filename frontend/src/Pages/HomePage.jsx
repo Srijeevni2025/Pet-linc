@@ -10,7 +10,7 @@ import Home from "./Home";
 import { GlobalContext } from "../Store/Context";
 import BoishakhBanner from "../Components/BoishakhBanner";
 import BoishakhAnnouncementBar from "../Components/BoishakhAnnouncementBar";
-import PetDayAnnouncementBar from "../Features/Offers/PetDayAnnouncementBar";
+
 
 function HomePage() {
   const { showBookingModal } = useContext(GlobalContext);
