@@ -25,3 +25,24 @@ exports.getAllGroomers = catchAsync(async(req, res, next)=>{
     })
 })
 
+
+exports.changeAvailability = catchAsync(async(req, res, next)=>{
+const { date, unblock } = req.body;
+
+  if (!date) return res.status(400).json({ message: "date is required" });
+
+  const groomer = await Groomer.findById(req.params.id);
+  if (!groomer) return res.status(404).json({ message: "Groomer not found" });
+
+  if (unblock) {
+    groomer.unavailableDates = (groomer.unavailableDates || []).filter(d => d !== date);
+  } else {
+    if (!groomer.unavailableDates) groomer.unavailableDates = [];
+    if (!groomer.unavailableDates.includes(date)) {
+      groomer.unavailableDates.push(date);
+    }
+  }
+
+  await groomer.save();
+  res.json({ success: true, data: groomer });
+})
