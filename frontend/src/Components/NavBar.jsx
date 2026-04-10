@@ -196,6 +196,28 @@ export default function Navbar() {
                     </button>
                   </div>
                 )}
+
+                {menuOpen && userData?.user?.role === 'partner' && (
+                  <div className="absolute right-0 mt-3 w-40 bg-white border border-orange-100 rounded-xl shadow-lg py-2 z-50">
+                    <Link to="/my-profile" className="block px-4 py-2 hover:bg-orange-50">
+                      My Profile
+                    </Link>
+                    <Link to="/my-bookings" className="block px-4 py-2 hover:bg-orange-50">
+                      My Bookings
+                    </Link>
+                    <Link to="/partner-dashboard" className="block px-4 py-2 hover:bg-orange-50">
+                     Partner Dashboard
+                    </Link>
+                    <hr className="my-1 border-orange-100" />
+                    <button
+                      onClick={handleLogout}
+                      
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-orange-50"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex rounded-full border border-orange-500 overflow-hidden text-sm font-medium">
