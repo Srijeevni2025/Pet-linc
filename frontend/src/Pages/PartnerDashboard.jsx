@@ -1060,6 +1060,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom';
 import {
   Wallet, CalendarCheck, ClipboardList, TrendingUp,
   Star, PawPrint, ChevronRight, Plus, X, CheckCircle2,
@@ -1832,6 +1833,7 @@ function PayoutDetailsForm({ initialData, onSaved }) {
    MAIN DASHBOARD
    ───────────────────────────────────────────────────────────── */
 export default function PartnerDashboard() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab]     = useState("overview");
   const [showModal, setShowModal]     = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -1903,7 +1905,7 @@ export default function PartnerDashboard() {
       <div className="bg-white border-b border-orange-100 shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img className="w-40 h-10 object-contain" src="/images/Navbar/PetlincLogo.png" alt="Petlinc" />
+            <img className="w-40 h-10 object-contain" src="/images/Navbar/PetlincLogo.png" alt="Petlinc" onClick={()=>{navigate('/')}} />
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-3 py-1.5">
