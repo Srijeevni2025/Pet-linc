@@ -18,4 +18,5 @@ router.patch(
   groomerAuthController.protectGroomer,
   groomerAuthController.updateFcmToken
 );
+router.patch('/:id/availability', authController.protect, authController.restrictTo('admin'), groomerController.changeAvailability);
 module.exports = router;

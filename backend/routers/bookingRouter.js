@@ -14,5 +14,5 @@ router.route('/change-read-status/:id').patch(authController.protect, authContro
 router.route('/assign-groomer/:id').patch(authController.protect, authController.restrictTo('admin'), bookingController.assignGroomer)
 router.route('/cancel-booking/:id').patch(authController.protect, bookingController.changeStatus);
 router.route('/get-slot-availability').get(bookingController.getSlotAvailability)
-
+router.route('/download-invoice/:id').get(authController.protect, bookingController.downloadInvoice)
 module.exports = router;

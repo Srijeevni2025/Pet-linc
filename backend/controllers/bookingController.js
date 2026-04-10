@@ -6,6 +6,7 @@ const Booking = require('./../models/bookingModel');
 const appError = require('../utils/appError');
 const sendNotification = require('../utils/sendNotification');
 const Groomer = require('../models/groomerModel');
+const generateInvoice = require('../utils/generateInvoice');
 
 
 exports.createNewBooking = catchAsync(async(req, res, next)=>{
@@ -165,3 +166,31 @@ exports.getSlotAvailability = catchAsync(async(req, res, next)=>{
 
 
 
+
+
+
+    exports.downloadInvoice = catchAsync(async (req, res, next) => {
+  const bookingId = req.params.id;
+  console.log("Download invoice request for booking ID:", bookingId);
+  const userId    = req.user._id;
+ 
+  const booking = await Booking
+    .findById(bookingId)
+    .populate('addons productId userId');
+ 
+  if (!booking) {
+    return next(new appError(404, "Booking not found."));
+  }
+ 
+  // Security: user can only download their own invoice
+  if (String(booking.userId?._id || booking.userId) !== String(userId)) {
+    return next(new appError(403, "Not authorised to access this invoice."));
+  }
+ 
+  // Only allow download for completed bookings
+  if (booking.status !== "completed") {
+    return next(new appError(400, "Invoice is only available for completed bookings."));
+  }
+ 
+  generateInvoice(res, booking);
+});

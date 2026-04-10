@@ -1519,6 +1519,10 @@ import AdminNavbar from "./../Features/Admin/AdminNavbar";
 import { GetAllGroomers } from "../Features/Groomers/queryFunctions";
 import { Loader, Users, BookOpen, BadgeCheck, AlertCircle, CheckCircle2, Loader2, X, ChevronDown, ChevronUp, IndianRupee } from "lucide-react";
 import queryClient from "../Store/queryClient";
+import AnalyticsTab from "../Components/AnalyticsTab";
+
+  import GroomerSchedule from "../Components/GroomerSchedule";
+  import CustomerDrawer from "../Components/CustomerDrawer";
 
 const API_URL_BASE = import.meta.env.VITE_BASE_URL;
 const PAGE_SIZE = 10;
@@ -1555,6 +1559,9 @@ export default function AdminDashboard() {
   // ✅ Pagination state
   const [page, setPage] = useState(1);
 
+
+// in state:
+const [selectedCustomer, setSelectedCustomer] = useState(null);
   const {
     data: bookings = [],
     isPending,
@@ -1714,6 +1721,8 @@ export default function AdminDashboard() {
         {[
           { key: "bookings", label: "📋 Bookings" },
           { key: "partners", label: "🤝 Partners" },
+          { key: "analytics", label: "📊 Analytics" },
+          { key: "schedule", label: "📅 Schedule" }
         ].map((tab) => (
           <button
             key={tab.key}
@@ -1731,10 +1740,17 @@ export default function AdminDashboard() {
 
       {/* ── PARTNERS TAB ─────────────────────────────────────────────────── */}
       {activeTab === "partners" && <PartnersPanel />}
-
+{activeTab === "analytics" && <AnalyticsTab bookings={bookings} />}
+{activeTab === "schedule" && <GroomerSchedule bookings={bookings} />}
+<CustomerDrawer
+  customer={selectedCustomer}
+  allBookings={bookings}
+  onClose={() => setSelectedCustomer(null)}
+/>
       {/* ── BOOKINGS TAB ─────────────────────────────────────────────────── */}
       {activeTab === "bookings" && <>
 
+      
       {/* ✅ STATS CARDS */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 mt-6">
         {[
@@ -1843,6 +1859,7 @@ export default function AdminDashboard() {
                 <th className="px-4 py-3">Customer</th>
                 <th className="px-4 py-3">Pet</th>
                 <th className="px-4 py-3">Package</th>
+                <th className="px-4 py-3">City</th>
 
                 {/* ✅ Sortable: Date */}
                 <th
@@ -1898,14 +1915,15 @@ export default function AdminDashboard() {
                     )}
                   </td>
 
-                  <td className="px-4 py-3">
-                    <div className="font-medium">{b.userId?.name}</div>
+                  <td className="px-4 py-3 cursor-pointer" onClick={() => setSelectedCustomer(b.userId)}>
+                    <div className="font-medium text-indigo-600 hover:underline">{b.userId?.name}</div>
                     <div className="text-xs text-slate-400">{b.userId?.email}</div>
                   </td>
 
                   <td className="px-4 py-3">{b.petName}</td>
                   <td className="px-4 py-3">{b.productId?.name}</td>
 
+                  <td className="px-4 py-3">{b.city}</td>
                   <td className="px-4 py-3">
                     <div className="font-medium">{new Date(b.date).toDateString()}</div>
                     <div className="text-xs text-slate-400">{b.timeSlot}</div>
@@ -2844,3 +2862,4 @@ function PartnerCard({ partner, expanded, onToggle, onRefresh }) {
     </div>
   );
 }
+

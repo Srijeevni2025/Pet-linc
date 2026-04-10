@@ -87,6 +87,7 @@ password: {
       type: Boolean,
       default: false, // true when handling an order
     },
+    unavailableDates: [String], // stored as "YYYY-MM-DD"
 
     // SERVICES & PRICING
     // services: {
