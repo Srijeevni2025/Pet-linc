@@ -1760,6 +1760,7 @@ import { GetAllPackages, GetSlotAvailability } from "../Features/Booking/queryFu
 import ProtectedRoute from "./Protect";
 import { CheckCircle, MapPin, Trash2, PlusCircle, ChevronDown, ChevronUp } from "lucide-react";
 import queryClient from "../Store/queryClient";
+import { gtagReportConversion } from "../utils/gtag";
 
 // ─── constants ────────────────────────────────────────────────────────────────
 
@@ -2037,7 +2038,7 @@ export default function BookingModal() {
     successCount.current = 0;
     errorCount.current   = 0;
     totalPets.current    = pets.length;
-
+    
     pets.forEach((pet) => {
       mutate({
         productId:     pet.productId,
@@ -2062,6 +2063,7 @@ export default function BookingModal() {
         couponId:      couponId      || null,
         city,
       });
+      gtagReportConversion();
     });
   }
 
