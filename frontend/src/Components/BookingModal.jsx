@@ -1964,6 +1964,9 @@ export default function BookingModal() {
       successCount.current += 1;
       queryClient.invalidateQueries(["slotAvailability", form.date]);
       if (successCount.current + errorCount.current === totalPets.current) finishAll();
+      window.dataLayer.push({
+      event: "petFormSuccess"
+    });
     },
     onError: () => {
       errorCount.current += 1;
