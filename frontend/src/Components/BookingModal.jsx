@@ -2418,12 +2418,12 @@ export default function BookingModal() {
                 className="px-7 py-2.5 rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700 flex-shrink-0">
                 Next
               </button>
-            : <ProtectedRoute>
+            : 
                 <button onClick={handleSubmit}
                   className="px-6 py-2.5 rounded-full bg-orange-600 text-white font-semibold hover:bg-orange-700 text-sm flex-shrink-0">
                   Confirm {pets.length > 1 ? `${pets.length} Bookings` : "Booking"}
                 </button>
-              </ProtectedRoute>
+              
           }
         </div>
       </div>

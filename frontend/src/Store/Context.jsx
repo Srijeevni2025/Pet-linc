@@ -12,6 +12,7 @@ function ContextProvider({children}){
     const [selectedProduct, setSelectedProduct] = useState('')  //
     const [currentCity, setCurrentCity] = useState(localStorage.getItem("currentCity"));
     const [cityModalOpen, setCityModalOpen] = useState(localStorage.getItem("currentCity")!==null?false:true);
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
 
       const [form, setForm] = useState({
     productId: "",
@@ -56,7 +57,9 @@ function ContextProvider({children}){
             currentCity,
             setCurrentCity,
             cityModalOpen,
-            setCityModalOpen
+            setCityModalOpen,
+            loginModalOpen,
+            setLoginModalOpen
         
         }}>
             {children}

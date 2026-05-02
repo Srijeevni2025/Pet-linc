@@ -10,6 +10,7 @@ import Home from "./Home";
 import { GlobalContext } from "../Store/Context";
 import BoishakhBanner from "../Components/BoishakhBanner";
 import BoishakhAnnouncementBar from "../Components/BoishakhAnnouncementBar";
+import LoginModal from "../ui/LoginModal";
 
 
 function HomePage() {
@@ -40,6 +41,7 @@ function HomePage() {
       {/* <PetDayAnnouncementBar/> */}
       <Navbar />
       <HomePageHeroSection />
+      <LoginModal/>
       {/* <BoishakhBanner /> */}
       <GroomingCategory id="grooming-category" />
       <WhyChooseUs />
