@@ -8,7 +8,7 @@ import { GlobalContext } from "../Store/Context";
 
 export default function GoogleLoginButton() {
   const navigate = useNavigate();
-  const {isLoggedInRef} = useContext(GlobalContext)
+  const {isLoggedInRef, setLoginModalOpen} = useContext(GlobalContext)
 
   const { mutate, isPending } = useMutation({
     mutationFn:GoogleLogin,
@@ -28,6 +28,7 @@ export default function GoogleLoginButton() {
              
               onSuccess: () =>{ 
                 isLoggedInRef.current = true;
+                setLoginModalOpen(false);
                 navigate("/", {replace:true})},
             });
           },
