@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Footer from "../Components/Footer";
 import GroomerCTA from "../Components/GroomerCTA";
 import GroomingCategory from "../Components/GroomingCategory";
@@ -15,9 +15,19 @@ import LoginModal from "../ui/LoginModal";
 
 function HomePage() {
   const { showBookingModal } = useContext(GlobalContext);
+useEffect(() => {
+    setTimeout(() => {
+      const section = document.getElementById("grooming-category");
+      if (section) {
+        section.scrollIntoView({ behavior: "auto" }); // avoid smooth on mobile
+      }
+    }, 300); // delay is key
+  }, []);
   return (
     // navbar
+    
     <>
+    
       {/* //whatsapp icon */}
       {!showBookingModal && (
         <a
