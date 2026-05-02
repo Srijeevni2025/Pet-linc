@@ -7,14 +7,16 @@ import BookingModal from "./BookingModal";
 import { GetAllPackages } from "../Features/Packages/queryFunction";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
+import { GetLoggedInUser } from "../Features/Authentication/queryFunction";
 
 export default function GroomingPackagesPage() {
   const {
     showBookingModal,
+    loginModalOpen,
     setShowBookingModal,
     setSelectedPackage,
     setStepBookingModal,
-   
+    setLoginModalOpen
   } = useContext(GlobalContext);
 
   const openModal = (pkg) => {
@@ -27,10 +29,23 @@ export default function GroomingPackagesPage() {
     queryKey: ["packages"],
     queryFn: GetAllPackages,
   });
+
+  const {data:userData} = useQuery({
+    queryKey:["userData"],
+      queryFn: GetLoggedInUser
+  })
   if (isPending) {
     return <Loader/>;
   }
+  
 
+  function handleSubmit(pkg) {
+    if(!userData) {
+      setLoginModalOpen(true);
+      return;
+    }
+    openModal(pkg);
+  }
   const addons = [
     { name: "Anti Tick & Flea (Ridd)", price: "₹250" },
     { name: "Anti Tick & Flea (Spot On)", price: "₹500" },
@@ -39,7 +54,7 @@ export default function GroomingPackagesPage() {
     { name: "De-Shedding", price: "₹400" },
     { name: "De-Matting", price: "₹500" },
   ];
-
+ 
   return (
     <div id = "grooming-category" className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 py-20">
       {/* ---------------- HEADER ---------------- */}
@@ -184,7 +199,7 @@ export default function GroomingPackagesPage() {
 
     {/* CTA BUTTON */}
     <button
-      onClick={() => openModal(pkg)}
+      onClick={() => handleSubmit(pkg)}
       className="
         px-7 py-3 
         rounded-full font-semibold text-sm 
