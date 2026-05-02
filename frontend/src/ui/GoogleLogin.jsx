@@ -13,6 +13,7 @@ export default function GoogleLoginButton() {
   const { mutate, isPending } = useMutation({
     mutationFn:GoogleLogin,
     onSuccess:async()=>{
+      setLoginModalOpen(false);
         queryClient.invalidateQueries(["userData"]);
     }
   });
