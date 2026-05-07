@@ -12,14 +12,17 @@ export default function App({city}){
 
   const {cityModalOpen, setCurrentCity} = useContext(GlobalContext);
 
-  localStorage.setItem("currentCity",city);
-  
-  if(city != ""){
-    setCurrentCity(city);
+
+  if(cityModalOpen && city == ""){
+    return <CitySelectionModal/>
   }
 
-  if(cityModalOpen && city != ""){
-    return <CitySelectionModal/>
+  const savedCity = localStorage.getItem("currentCity");
+  if(savedCity == "" ){
+  localStorage.setItem("currentCity",city);
+  }
+  if(city != ""){
+    setCurrentCity(city);
   }
 
   return (
