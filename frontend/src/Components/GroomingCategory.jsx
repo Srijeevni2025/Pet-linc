@@ -51,7 +51,7 @@ export default function GroomingPackagesPage() {
     { name: "Anti Tick & Flea (Spot On)", price: "₹500" },
     { name: "Oil Massage", price: "₹300" },
     { name: "Anal Gland Cleaning", price: "₹300" },
-    { name: "De-Shedding", price: "₹400" },
+    { name: "De-Shedding", price: "₹500" },
     { name: "De-Matting", price: "₹500" },
   ];
  
