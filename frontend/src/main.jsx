@@ -40,7 +40,7 @@ root.render(//<React.StrictMode>
 
 <BrowserRouter>
     <Routes>
-        <Route index element = {<App/>}/>
+        <Route index element = {<App city = {""}/>}/>
         <Route path = "/signin" element = {<SignIn/>}/>
         <Route path = "/signup" element = {<Signup/>}/>
         <Route path="/booking-success" element={<BookingSuccess />} />
@@ -57,6 +57,8 @@ root.render(//<React.StrictMode>
         <Route path = "/add-groomer" element = {<ProtectedRoute><AddGroomer/></ProtectedRoute>}/>
         <Route path = "/groomers-list" element = {<GroomersList/>}/>
         <Route path = "/groomer-panel" element = {<GroomerPanel/>}/>
+        <Route path = "/mumbai" element  = {<App city = {"mumbai"}/>}/>
+        <Route path = "/kolkata" element  = {<App city = {"kolkata"}/>}/>
         <Route                                        
           path = "/partner-dashboard"
           element = {

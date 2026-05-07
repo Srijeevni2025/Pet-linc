@@ -8,12 +8,20 @@ import Packages from "./Pages/Packages"
 
 import { GlobalContext } from "./Store/Context"
 
-export default function App(){
+export default function App({city}){
 
-  const {cityModalOpen} = useContext(GlobalContext);
-  if(cityModalOpen){
+  const {cityModalOpen, setCurrentCity} = useContext(GlobalContext);
+
+  localStorage.setItem("currentCity",city);
+  
+  if(city != ""){
+    setCurrentCity(city);
+  }
+
+  if(cityModalOpen && city != ""){
     return <CitySelectionModal/>
   }
+
   return (
       <>
 
