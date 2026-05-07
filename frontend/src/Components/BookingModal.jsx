@@ -1764,7 +1764,7 @@ import { gtagReportConversion } from "../utils/gtag";
 
 // ─── constants ────────────────────────────────────────────────────────────────
 
-const SLOTS        = ["9 AM - 11 PM", "12 PM - 2 PM", "3 PM - 5 PM", "5 PM - 7 PM"];
+const SLOTS        = ["9 AM - 11 AM", "12 PM - 2 PM", "3 PM - 5 PM", "5 PM - 7 PM"];
 const MAX_PER_SLOT = 3;
 
 const TERMS = [
