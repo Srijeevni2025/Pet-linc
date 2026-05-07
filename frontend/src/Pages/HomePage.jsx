@@ -55,7 +55,7 @@ useEffect(() => {
       {/* <BoishakhBanner /> */}
       <GroomingCategory id="grooming-category" />
       <WhyChooseUs />
-      <TestimonialVideos id = "testimonial-videos" />
+      <TestimonialVideos id ="testimonial-videos" />
       <GroomerCTA />
 
       <Footer />

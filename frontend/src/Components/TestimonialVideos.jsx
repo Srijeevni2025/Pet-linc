@@ -178,7 +178,7 @@ export default function TestimonialVideos() {
   };
 
   return (
-    <section className="py-24 bg-orange-50">
+    <section className="py-24 bg-orange-50" id = "testimonial-videos">
       <div className="max-w-6xl mx-auto px-5 md:px-10">
 
         <h2 className="text-center text-3xl md:text-4xl font-bold text-gray-900 mb-2">
