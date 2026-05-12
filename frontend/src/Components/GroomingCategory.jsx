@@ -169,12 +169,12 @@ export default function GroomingPackagesPage() {
     <div className="flex flex-col">
 
       {/* MRP (Slashed) */}
-      {pkg.originalPrice && (
+      {pkg.price && (
         <span className="
           text-sm text-gray-500 line-through 
           decoration-red-500 decoration-2
         ">
-          MRP: ₹{pkg.originalPrice}
+          MRP: ₹{Math.round(pkg.price*1 + 400)}
         </span>
       )}
 
