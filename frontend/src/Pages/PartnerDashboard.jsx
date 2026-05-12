@@ -1896,7 +1896,7 @@ export default function PartnerDashboard() {
   const partnerName  = profile?.name             || "Partner";
   const partnerCity  = profile?.city             || "";
   const isVerified   = profile?.isVerified       || false;
-  const incentivePct = profile?.incentivePercent ?? 15;
+  const incentivePct = profile?.incentivePercent ?? 10;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">

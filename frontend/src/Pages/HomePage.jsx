@@ -11,6 +11,7 @@ import { GlobalContext } from "../Store/Context";
 import BoishakhBanner from "../Components/BoishakhBanner";
 import BoishakhAnnouncementBar from "../Components/BoishakhAnnouncementBar";
 import LoginModal from "../ui/LoginModal";
+import DogTrainingPackages from "../Components/DogTrainingPackages";
 
 
 function HomePage() {
@@ -54,6 +55,7 @@ useEffect(() => {
       <LoginModal/>
       {/* <BoishakhBanner /> */}
       <GroomingCategory id="grooming-category" />
+      <DogTrainingPackages/>
       <WhyChooseUs />
       <TestimonialVideos />
       <GroomerCTA />
