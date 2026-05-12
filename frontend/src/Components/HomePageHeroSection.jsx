@@ -315,7 +315,7 @@ export default function HomePageHeroSection() {
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
             <a
-              href="#dog-training"
+              href="#training-packages"
               className="inline-flex items-center gap-2 rounded-xl font-black text-white border border-white/20 hover:bg-white/10 transition-all hover:scale-105"
               style={{
                 padding: "10px 24px",

@@ -55,7 +55,7 @@ useEffect(() => {
       <LoginModal/>
       {/* <BoishakhBanner /> */}
       <GroomingCategory id="grooming-category" />
-      <DogTrainingPackages/>
+      <DogTrainingPackages id = "training-packages"/>
       <WhyChooseUs />
       <TestimonialVideos id ="testimonial-videos" />
       <GroomerCTA />
