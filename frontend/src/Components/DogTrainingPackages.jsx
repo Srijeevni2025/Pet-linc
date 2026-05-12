@@ -67,7 +67,7 @@ const packages = [
 
 export default function DogTrainingPackages() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 py-20">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50 py-20" id = "training-packages">
       {/* HEADER */}
       <div className="text-center mb-16 px-6">
         <div className="inline-flex items-center justify-center bg-orange-100 w-20 h-20 rounded-3xl shadow-inner mb-4">
