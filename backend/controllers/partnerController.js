@@ -80,7 +80,7 @@ exports.partnerCreateBooking = catchAsync(async (req, res, next) => {
     if (!partner.isActive) {
         return next(new appError(403, "Your partner account has been deactivated. Contact admin."));
     }
-
+    console.log("Partner creating booking:", { partnerId: partner._id, requestBody: req.body });
     let {
         petName, type: petType, breed, age, weight, notes,
         address, pincode, lat, lng, city,
@@ -89,9 +89,10 @@ exports.partnerCreateBooking = catchAsync(async (req, res, next) => {
         coupan, couponId, discount,
         mobile, aggression,
         productId,
-        customerName:name
+        customerName,
+        customerEmail,
     } = req.body;
-    console.log(name);
+   
     lat = lat * 1;
     lng = lng * 1;
 
@@ -107,7 +108,8 @@ exports.partnerCreateBooking = catchAsync(async (req, res, next) => {
 
     const booking = await Booking.create({
         productId,
-        name,
+        customerName,
+        customerEmail,
         // No userId — partner is booking for a walk-in / referred customer
         petName, petType, breed, age, weight, notes,
         mobile, aggression,

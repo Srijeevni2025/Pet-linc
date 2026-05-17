@@ -13,6 +13,8 @@ const bookingSchema = new mongoose.Schema({
         type:mongoose.Schema.ObjectId,
         ref:'User'
     },
+    customerName:String,   // This is derived from userId for logged in users, but can also be provided by partners when they create bookings on behalf of customers.
+    customerEmail:String,   // This is derived from userId for logged in users, but can also be provided by partners when they create bookings on behalf of customers.
     petName:{
         type:String,
         required:[true, "A pet name must be there."]

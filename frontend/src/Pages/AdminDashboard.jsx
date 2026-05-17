@@ -1916,8 +1916,8 @@ const [selectedCustomer, setSelectedCustomer] = useState(null);
                   </td>
 
                   <td className="px-4 py-3 cursor-pointer" onClick={() => setSelectedCustomer(b.userId)}>
-                    <div className="font-medium text-indigo-600 hover:underline">{b.userId?.name}</div>
-                    <div className="text-xs text-slate-400">{b.userId?.email}</div>
+                    <div className="font-medium text-indigo-600 hover:underline">{b.userId?.name || b.customerName}</div>
+                    <div className="text-xs text-slate-400">{b.userId?.email || b.customerEmail}</div>
                   </td>
 
                   <td className="px-4 py-3">{b.petName}</td>
@@ -2112,7 +2112,7 @@ function FullPageBookingView({ booking, onClose, onUpdated }) {
 
   const handleCopyDetails = async () => {
     const formattedText = `
-Name - ${booking.userId?.name || ""}
+Name - ${booking.userId?.name || booking?.customerName || ""}
 Contact - ${booking.mobile || ""}
 Location - ${booking.address || ""}
 Date - ${booking.date ? new Date(booking.date).toLocaleDateString() : ""}
@@ -2261,8 +2261,8 @@ Total Price - ₹${(booking.bookingMarkedPrice || 0) - (booking.discount || 0)}
         {/* DETAILS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InfoCard title="Customer & Location">
-            <p><strong>Name:</strong> {booking.userId?.name}</p>
-            <p><strong>Email:</strong> {booking.userId?.email}</p>
+            <p><strong>Name:</strong> {booking.userId?.name || booking.customerName}</p>
+            <p><strong>Email:</strong> {booking.userId?.email || booking.customerEmail}</p>
             
 
             
