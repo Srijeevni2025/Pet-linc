@@ -1061,11 +1061,14 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
+import {Logout} from "./../Features/Authentication/mutationFunction"
+import {useMutation} from "@tanstack/react-query";
+import queryClient from "./../Store/queryClient";
 import {
   Wallet, CalendarCheck, ClipboardList, TrendingUp,
   Star, PawPrint, ChevronRight, Plus, X, CheckCircle2,
   Clock, IndianRupee, User, Phone, MapPin, BadgeCheck,
-  AlertCircle, Loader2, RefreshCw, CreditCard,
+  AlertCircle, Loader2, RefreshCw, CreditCard, LogOut,
 } from "lucide-react";
 
 const API_URL_BASE = import.meta.env.VITE_BASE_URL;
@@ -1898,6 +1901,23 @@ export default function PartnerDashboard() {
   const isVerified   = profile?.isVerified       || false;
   const incentivePct = profile?.incentivePercent ?? 15;
 
+
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const { mutate} = useMutation({
+    mutationFn: Logout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userData"] });
+      setLoggingOut(false);
+      navigate("/", { replace: true });
+    }
+  });
+
+  function handleLogout() {
+    setLoggingOut(true);
+    mutate();
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
 
@@ -1917,6 +1937,7 @@ export default function PartnerDashboard() {
                 {isVerified ? "VERIFIED PARTNER" : "PENDING KYC"}
               </span>
             </div>
+            <div className ="flex items-center gap-3">
             <div className="flex items-center gap-2">
               {profileLoading
                 ? <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center"><Spinner size={16} /></div>
@@ -1926,6 +1947,16 @@ export default function PartnerDashboard() {
                 <p className="text-sm font-semibold text-gray-800">{partnerName}</p>
                 <p className="text-xs text-gray-400">{partnerCity}</p>
               </div>
+              </div>
+              <button
+    onClick={handleLogout}
+    disabled={loggingOut}
+    title="Logout"
+    className="flex items-center gap-1.5 text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 border border-red-200 px-3 py-1.5 rounded-full transition disabled:opacity-50"
+  >
+    {loggingOut ? <Loader2 size={14} className="animate-spin" /> : <LogOut size={14} />}
+    <span className="hidden sm:inline">Logout</span>
+  </button>
             </div>
           </div>
         </div>
